@@ -2,7 +2,7 @@
 .ipynb_checkpoints
 .mypy_cache
 .vscode
-__pycache__
+__pycache__/
 .pytest_cache
 htmlcov
 dist
@@ -14,12 +14,12 @@ test.db
 log.txt
 Pipfile.lock
 env3.*
+.env
 env
 docs_build
 venv
 docs.zip
 archive.zip
-__pycache__
 
 # vim temporary files
 *~
