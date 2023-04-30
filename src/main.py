@@ -1,10 +1,12 @@
 from fastapi import Depends, FastAPI
 from sqlalchemy.orm import Session
 
+from typing import List
+
 import schemas
 import crud
-
 from database import SessionLocal
+
 
 app = FastAPI()
 
@@ -25,4 +27,12 @@ async def root():
 
 @app.post("/projects/", response_model=schemas.Project)
 async def create_project(project: schemas.ProjectCreate, db: Session = Depends(get_db)):
-    return crud.create_project_item(db=db, project=project)
+    return crud.create_project(db=db, project=project)
+
+
+@app.get("/projects/", response_model=List[schemas.Project])
+async def get_all_projects(
+    skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
+):
+    projects = crud.get_all_projects(db, skip=skip, limit=limit)
+    return projects
