@@ -36,7 +36,7 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 
-import app.database as database
+import app.db.database as database
 
 target_metadata = database.Base.metadata
 

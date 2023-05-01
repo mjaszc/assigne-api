@@ -1,7 +1,7 @@
 from sqlalchemy import Column, DateTime, Integer, String
 from datetime import datetime
 
-from database import Base
+from db.database import Base
 
 
 class Project(Base):
