@@ -1,10 +1,10 @@
 from sqlalchemy.orm import Session
 
 import models.project_model as project_model
-import schemas.project_schemas as project_schemas
+import schemas.project_schema as project_schema
 
 
-def create_project(db: Session, project: project_schemas.ProjectCreate):
+def create_project(db: Session, project: project_schema.ProjectCreate):
     db_item = project_model.Project(**project.dict())
     db.add(db_item)
     db.commit()

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 
-import schemas.project_schemas as project_schemas
+import schemas.project_schema as project_schema
 import crud.project_crud as project_crud
 from db.database import SessionLocal
 
@@ -18,14 +18,14 @@ def get_db():
         db.close()
 
 
-@router.post("/", response_model=project_schemas.Project)
+@router.post("/", response_model=project_schema.Project)
 async def create_project(
-    project: project_schemas.ProjectCreate, db: Session = Depends(get_db)
+    project: project_schema.ProjectCreate, db: Session = Depends(get_db)
 ):
     return project_crud.create_project(db=db, project=project)
 
 
-@router.get("/{id}", response_model=project_schemas.Project)
+@router.get("/{id}", response_model=project_schema.Project)
 async def get_project_by_id(id: int, db: Session = Depends(get_db)):
     project = project_crud.get_project_by_id(db=db, project_id=id)
     if not project:
@@ -33,7 +33,7 @@ async def get_project_by_id(id: int, db: Session = Depends(get_db)):
     return project
 
 
-@router.get("/", response_model=List[project_schemas.Project])
+@router.get("/", response_model=List[project_schema.Project])
 async def get_all_projects(
     skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
 ):
