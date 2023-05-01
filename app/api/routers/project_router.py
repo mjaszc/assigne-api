@@ -22,12 +22,12 @@ def get_db():
 async def create_project(
     project: project_schema.ProjectCreate, db: Session = Depends(get_db)
 ):
-    return project_crud.create_project(db=db, project=project)
+    return project_crud.create_project(db, project)
 
 
 @router.get("/{id}", response_model=project_schema.Project)
 async def get_project_by_id(id: int, db: Session = Depends(get_db)):
-    project = project_crud.get_project_by_id(db=db, project_id=id)
+    project = project_crud.get_project_by_id(db, id)
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
     return project
@@ -37,5 +37,16 @@ async def get_project_by_id(id: int, db: Session = Depends(get_db)):
 async def get_all_projects(
     skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
 ):
-    projects = project_crud.get_all_projects(db, skip=skip, limit=limit)
+    projects = project_crud.get_all_projects(db, skip, limit)
     return projects
+
+
+@router.put("/{id}", response_model=project_schema.Project)
+async def update_project_by_id(
+    id: int, project: project_schema.ProjectCreate, db: Session = Depends(get_db)
+):
+    project_id = project_crud.get_project_by_id(db, id)
+    if not project_id:
+        raise HTTPException(status_code=404, detail="Project not found")
+    db_project = project_crud.update_project(db, id, project)
+    return db_project
