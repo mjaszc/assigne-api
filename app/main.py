@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from api.api import api_router
+from app.api.api import api_router
 
 app = FastAPI(title="AssigneAPI")
 

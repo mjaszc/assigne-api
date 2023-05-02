@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 
-import models.project_model as project_model
-import schemas.project_schema as project_schema
+import app.models.project_model as project_model
+import app.schemas.project_schema as project_schema
 
 
 def create_project(db: Session, project: project_schema.ProjectCreate):
