@@ -12,7 +12,7 @@ def create_project(db: Session, project: project_schema.ProjectCreate):
     return db_item
 
 
-def get_project_by_id(db: Session, project_id: int):
+def get_project(db: Session, project_id: int):
     return (
         db.query(project_model.Project)
         .filter(project_model.Project.id == project_id)
@@ -34,3 +34,16 @@ def update_project(db: Session, project_id: int, project: project_schema.Project
     db.commit()
     db.refresh(db_project)
     return db_project
+
+
+def delete_project(db: Session, project_id: int):
+    project = (
+        db.query(project_model.Project)
+        .filter(project_model.Project.id == project_id)
+        .first()
+    )
+    if not project:
+        return False
+    db.delete(project)
+    db.commit()
+    return True

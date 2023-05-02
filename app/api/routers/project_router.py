@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 
@@ -27,7 +27,7 @@ async def create_project(
 
 @router.get("/{id}", response_model=project_schema.Project)
 async def get_project_by_id(id: int, db: Session = Depends(get_db)):
-    project = project_crud.get_project_by_id(db, id)
+    project = project_crud.get_project(db, id)
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
     return project
@@ -45,8 +45,16 @@ async def get_all_projects(
 async def update_project_by_id(
     id: int, project: project_schema.ProjectCreate, db: Session = Depends(get_db)
 ):
-    project_id = project_crud.get_project_by_id(db, id)
+    project_id = project_crud.get_project(db, id)
     if not project_id:
         raise HTTPException(status_code=404, detail="Project not found")
     db_project = project_crud.update_project(db, id, project)
     return db_project
+
+
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_project(id: int, db: Session = Depends(get_db)):
+    project_id = project_crud.get_project(db, id)
+    if not project_id:
+        raise HTTPException(status_code=404, detail="Project not found")
+    project_crud.delete_project(db, id)
