@@ -17,25 +17,19 @@ sys.path.append(BASE_DIR)
 # access to the values within the .ini file in use.
 config = context.config
 
-# this will overwrite the ini-file sqlalchemy.url path
-# with the path given in the config of the main code
-config.set_main_option("sqlalchemy.url", os.environ["DATABASE_URL"])
-
-# passing vars to the alembic.ini file
-section = config.config_ini_section
-config.set_section_option(section, "DB_USER", os.environ.get("DB_USER"))
-config.set_section_option(section, "DB_PASS", os.environ.get("DB_PASS"))
-
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
+# this will overwrite the ini-file sqlalchemy.url path
+# with the path given in the config of the main code
+config.set_main_option("sqlalchemy.url", os.environ["DATABASE_URL"])
+
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-
 import app.db.database as database
 
 target_metadata = database.Base.metadata
