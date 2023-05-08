@@ -11,7 +11,6 @@ load_dotenv(BASE_DIR / ".env")
 
 SQLALCHEMY_DATABASE_URL = os.environ["DATABASE_URL"]
 
-print(SQLALCHEMY_DATABASE_URL)
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
