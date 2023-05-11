@@ -5,7 +5,6 @@ from typing import Optional
 class UserBase(BaseModel):
     email: str
     username: str
-    is_active: Optional[bool]
 
 
 class UserCreate(UserBase):
@@ -14,7 +13,12 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    is_active: bool
+    is_active: Optional[bool]
 
     class Config:
         orm_mode = True
+
+
+class UserLogin(BaseModel):
+    username: str
+    password: str
