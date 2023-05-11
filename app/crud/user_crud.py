@@ -30,3 +30,9 @@ def get_user(db: Session, email: str, username: str):
         )
         .first()
     )
+
+
+def get_user_by_username(db: Session, username: str):
+    return (
+        db.query(user_model.User).filter(user_model.User.username == username).first()
+    )
