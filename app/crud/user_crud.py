@@ -59,6 +59,10 @@ def get_user_by_username(db: Session, username: str):
     )
 
 
+def get_all_users(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(user_model.User).offset(skip).limit(limit).all()
+
+
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
     if expires_delta:

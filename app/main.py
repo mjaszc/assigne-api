@@ -25,11 +25,6 @@ def get_db():
         db.close()
 
 
-@app.get("/")
-async def root():
-    return {"message": "App is working!"}
-
-
 @app.post("/token", response_model=user_schema.Token)
 def login_for_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
@@ -45,6 +40,20 @@ def login_for_access_token(
     )
 
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+@app.post("/register", response_model=user_schema.User)
+def register(user: user_schema.UserCreate, db: Session = Depends(get_db)):
+    # Check if user already exists
+    existing_user = user_crud.get_user(db, user.email, user.username)
+    if existing_user:
+        raise HTTPException(
+            status_code=400,
+            detail="User with this email or username already registered",
+        )
+
+    db_user = user_crud.create_user(db, user)
+    return db_user
 
 
 app.include_router(api_router)
