@@ -1,0 +1,32 @@
+name: Assigne API
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Compose
+      run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+          sudo docker-compose --version
+
+    - name: Build and run Docker containers
+      run: |
+          sudo docker-compose up -d --build
+
+    - name: Wait for containers to start
+      run: |
+          sleep 10
+
+    - name: Run Alembic migration
+      run: |
+          sudo docker-compose run web alembic upgrade head
