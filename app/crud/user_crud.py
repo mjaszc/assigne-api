@@ -63,6 +63,10 @@ def get_all_users(db: Session, skip: int = 0, limit: int = 100):
     return db.query(user_model.User).offset(skip).limit(limit).all()
 
 
+def get_user_by_id(db: Session, user_id: int) -> Optional[user_model.User]:
+    return db.query(user_model.User).filter(user_model.User.id == user_id).first()
+
+
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
     if expires_delta:
