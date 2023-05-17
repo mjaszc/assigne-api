@@ -17,6 +17,13 @@ jobs:
       run: |
         touch .env
         echo DB_USER=${{ secrets.DB_USER }} >> .env
+        echo DB_PASS=${{ secrets.DB_PASS }} >> .env
+        echo DB_NAME=${{ secrets.DB_NAME }} >> .env
+        echo DATABASE_URL=${{ secrets.DATABASE_URL }} >> .env
+        echo PGADMIN_EMAIL=${{ secrets.PGADMIN_EMAIL }} >> .env
+        echo PGADMIN_PASS=${{ secrets.PGADMIN_PASS }} >> .env
+        echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
+        echo ALGORITHM=${{ secrets.ALGORITHM  }} >> .env
 
     - name: Set up Docker Compose        
       run: |
