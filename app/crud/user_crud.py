@@ -81,6 +81,25 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     )
     return encoded_jwt
 
+def create_refresh_token(data: dict, expires_delta: Optional[timedelta] = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(days=1)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, config.get("SECRET_KEY"), config.get("ALGORITHM"))
+    return encoded_jwt
+
+def decode_token(token: str):
+    try:
+        payload = jwt.decode(token, config.get("SECRET_KEY"), config.get("ALGORITHM"))
+        username = payload.get("sub")
+        if username is None:
+            raise JWTError()
+        return username
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
 
 async def get_current_user(
     token: Annotated[str, Depends(oauth2_scheme)], db: Session = Depends(get_db)
