@@ -55,7 +55,7 @@ async def refresh_token(response: Response, refresh_token: str = Depends(oauth2_
         db_user = user_crud.get_user_by_username(db, username)
         if db_user is None:
             raise HTTPException(status_code=401, detail="Invalid username")
-        access_token = user_crud.create_access_token(data={"sub": username}, expires_delta=timedelta(minutes=1))
+        access_token = user_crud.create_access_token(data={"sub": username}, expires_delta=timedelta(minutes=15))
         response.set_cookie(key="access_token", value=access_token, httponly=True)
         return {"access_token": access_token, "token_type": "bearer"}
     except JWTError:
