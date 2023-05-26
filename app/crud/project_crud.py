@@ -3,9 +3,16 @@ from sqlalchemy.orm import Session
 import app.models.project_model as project_model
 import app.schemas.project_schema as project_schema
 
+from datetime import datetime
 
-def create_project(db: Session, project: project_schema.ProjectCreate):
-    db_item = project_model.Project(**project.dict())
+
+def create_project(db: Session, project: project_schema.ProjectCreate, current_user_id: int):
+    db_item = project_model.Project(
+        name=project.name,
+        description=project.description,
+        start_date=datetime.utcnow(),
+        author_id=current_user_id
+    )
     db.add(db_item)
     db.commit()
     db.refresh(db_item)

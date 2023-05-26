@@ -1,8 +1,8 @@
-"""first migration
+"""Create projects table
 
-Revision ID: e372ad9ec82d
-Revises: 
-Create Date: 2023-05-08 13:08:45.901105
+Revision ID: 1a9a444cff48
+Revises: 560a6ad60dac
+Create Date: 2023-05-25 21:38:22.245680
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = "e372ad9ec82d"
-down_revision = None
+revision = '1a9a444cff48'
+down_revision = '560a6ad60dac'
 branch_labels = None
 depends_on = None
 
@@ -23,6 +23,7 @@ def upgrade() -> None:
         sa.Column("name", sa.String(255), nullable=False),
         sa.Column("description", sa.String(255), nullable=False),
         sa.Column("start_date", sa.DateTime, nullable=False),
+        sa.Column("author_id", sa.Integer, sa.ForeignKey("users.id"), nullable=False),
     )
 
 
