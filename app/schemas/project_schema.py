@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 from datetime import date
+from app.schemas.user_schema import User
 
 
 class ProjectBase(BaseModel):
@@ -19,6 +20,7 @@ class ProjectUpdate(ProjectBase):
 
 class Project(ProjectBase):
     id: int
+    author: User
 
     class Config:
         orm_mode = True
