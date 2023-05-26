@@ -2,11 +2,12 @@ from sqlalchemy.orm import Session
 
 import app.models.project_model as project_model
 import app.schemas.project_schema as project_schema
+import app.schemas.user_schema as user_schema
 
 from datetime import datetime
 
 
-def create_project(db: Session, project: project_schema.ProjectCreate, current_user_id: int):
+def create_project(db: Session, project: project_schema.ProjectCreate, current_user_id: user_schema.User):
     db_item = project_model.Project(
         name=project.name,
         description=project.description,

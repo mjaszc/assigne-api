@@ -29,7 +29,7 @@ async def get_all_users(
 
 
 @router.get("/{id}", response_model=user_schema.User)
-async def get_project_by_id(
+async def get_user_by_id(
     id: int,
     db: Session = Depends(get_db),
     current_user: user_schema.User = Depends(user_crud.get_current_user),
