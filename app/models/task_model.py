@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 
 from app.db.database import Base
 
@@ -9,3 +10,6 @@ class Task(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String)
     description = Column(String)
+    project_id = Column(Integer, ForeignKey("projects.id"))
+
+    project = relationship("Project", back_populates="tasks")

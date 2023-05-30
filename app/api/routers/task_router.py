@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Path
 from sqlalchemy.orm import Session
 
 import app.schemas.task_schema as task_schema
@@ -7,7 +7,7 @@ from app.db.database import SessionLocal
 import app.schemas.user_schema as user_schema
 import app.crud.user_crud as user_crud
 
-router = APIRouter(prefix="/api/v1/tasks")
+router = APIRouter(prefix="/api/v1/projects/{project_id}/tasks")
 
 def get_db():
     db = SessionLocal()
@@ -20,7 +20,8 @@ def get_db():
 @router.post("/", response_model=task_schema.Task)
 async def create_task(
     task: task_schema.TaskCreate,
+    project_id: int = Path(..., title="Project ID"),
     db: Session = Depends(get_db),
     current_user: user_schema.User = Depends(user_crud.get_current_user),
 ):
-    return task_crud.create_task(db, task)
+    return task_crud.create_task(db, task, project_id)
