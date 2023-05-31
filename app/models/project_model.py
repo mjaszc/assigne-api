@@ -14,3 +14,4 @@ class Project(Base):
     author_id = Column(Integer, ForeignKey("users.id"))
 
     author = relationship("User", back_populates="projects")
+    tasks = relationship("Task", back_populates="project")
