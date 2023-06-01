@@ -13,16 +13,16 @@ def create_project(db: Session, project: project_schema.ProjectCreate, current_u
     if db.query(exists().where(project_model.Project.name == project.name)).scalar():
         raise HTTPException(status_code=400, detail="Project with the same name already exists.")
 
-    db_item = project_model.Project(
+    db_project = project_model.Project(
         name=project.name,
         description=project.description,
         start_date=datetime.utcnow(),
         author_id=current_user_id
     )
-    db.add(db_item)
+    db.add(db_project)
     db.commit()
-    db.refresh(db_item)
-    return db_item
+    db.refresh(db_project)
+    return db_project
 
 
 def get_project(db: Session, project_id: int):
