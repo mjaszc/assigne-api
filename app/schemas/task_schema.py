@@ -9,6 +9,11 @@ class TaskBase(BaseModel):
 class TaskCreate(TaskBase):
     pass
 
+class ProjectTasks(TaskBase):
+    id: int
+
+    class Config:
+        orm_mode = True
 
 class Task(TaskBase):
     id: int
