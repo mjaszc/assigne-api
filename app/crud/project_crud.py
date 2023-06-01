@@ -1,4 +1,6 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import exists
+from fastapi import HTTPException
 
 import app.models.project_model as project_model
 import app.schemas.project_schema as project_schema
@@ -8,6 +10,9 @@ from datetime import datetime
 
 
 def create_project(db: Session, project: project_schema.ProjectCreate, current_user_id: user_schema.User):
+    if db.query(exists().where(project_model.Project.name == project.name)).scalar():
+        raise HTTPException(status_code=400, detail="Project with the same name already exists.")
+
     db_item = project_model.Project(
         name=project.name,
         description=project.description,
