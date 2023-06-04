@@ -3,6 +3,7 @@ from sqlalchemy import exists
 from fastapi import HTTPException
 
 import app.models.project_model as project_model
+import app.models.user_model as user_model
 import app.schemas.project_schema as project_schema
 import app.schemas.user_schema as user_schema
 
@@ -58,5 +59,18 @@ def delete_project(db: Session, project_id: int):
     if not project:
         return False
     db.delete(project)
+    db.commit()
+    return True
+
+def assign_user_to_project(db: Session, project_id: int, user_id: int):
+    project = db.query(project_model.Project).filter(project_model.Project.id == project_id).first()
+    if not project:
+        raise HTTPException(status_code=404, detail=f"Project with ID {project_id} not found")
+
+    user = db.query(user_model.User).filter(user_model.User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail=f"User with ID {user_id} not found")
+
+    project.assigned_users.append(user)
     db.commit()
     return True

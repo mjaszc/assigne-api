@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+from typing import List
 
 import app.schemas.user_schema as user_schema
 import app.crud.user_crud as user_crud
@@ -17,7 +18,7 @@ def get_db():
         db.close()
 
 
-@router.get("/", response_model=user_schema.User)
+@router.get("/", response_model=List[user_schema.User])
 async def get_all_users(
     skip: int = 0,
     limit: int = 100,

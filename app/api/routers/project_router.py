@@ -81,3 +81,12 @@ async def delete_project(
     if not project_id:
         raise HTTPException(status_code=404, detail="Project not found")
     project_crud.delete_project(db, id)
+
+@router.post("/{id}/assign/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def assign_user_to_project(
+    id: int,
+    user_id: int,
+    db: Session = Depends(get_db),
+    current_user: user_schema.User = Depends(user_crud.get_current_user),
+):
+    project_crud.assign_user_to_project(db, id, user_id)
