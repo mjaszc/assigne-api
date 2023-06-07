@@ -4,6 +4,7 @@ from typing import List
 
 import app.schemas.project_schema as project_schema
 import app.crud.project_crud as project_crud
+import app.crud.task_crud as task_crud
 from app.db.database import SessionLocal
 import app.schemas.user_schema as user_schema
 import app.crud.user_crud as user_crud
@@ -43,8 +44,18 @@ async def get_project_by_id(
     project = project_crud.get_project(db, id)
     if not project:
         raise HTTPException(status_code=404, detail="Project not found")
-    return project
 
+    assigned_tasks = task_crud.get_assigned_tasks(db, id)
+    project_response = project_schema.Project(
+        id=project.id,
+        name=project.name,
+        description=project.description,
+        start_date=project.start_date,
+        author=project.author,
+        assigned_tasks=assigned_tasks
+    )
+
+    return project_response
 
 @router.get("/", response_model=List[project_schema.Project])
 async def get_all_projects(

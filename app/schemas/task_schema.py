@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from app.schemas.project_schema import Project
 
 class TaskBase(BaseModel):
     title: str
@@ -17,7 +16,6 @@ class ProjectTasks(TaskBase):
 
 class Task(TaskBase):
     id: int
-    project: Project
 
     class Config:
         orm_mode = True
