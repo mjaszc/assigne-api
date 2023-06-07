@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 import app.schemas.task_schema as task_schema
@@ -18,10 +18,22 @@ def get_db():
 
 
 @router.post("/", response_model=task_schema.Task)
-async def create_task_for_the_project(
+async def create_task(
     task: task_schema.TaskCreate,
     project_id: int,
     db: Session = Depends(get_db),
     current_user: user_schema.User = Depends(user_crud.get_current_user),
 ):
     return task_crud.create_task(db, task, project_id)
+
+@router.get("/{task_id}", response_model=task_schema.Task)
+async def get_task_by_id(
+    task_id: int,
+    project_id: int,
+    db: Session = Depends(get_db),
+    current_user: user_schema.User = Depends(user_crud.get_current_user),
+):
+    task = task_crud.get_task_by_id(db, task_id, project_id)
+    if task is None:
+        raise HTTPException(status_code=404, detail="Task not found")
+    return task

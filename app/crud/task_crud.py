@@ -19,3 +19,10 @@ def create_task(db: Session, task: task_schema.TaskCreate, current_project: proj
 def get_assigned_tasks(db: Session, project_id: int):
     assigned_tasks = db.query(task_model.Task).filter(task_model.Task.project_id == project_id).all()
     return assigned_tasks
+
+def get_task_by_id(db: Session, task_id: int, project_id: int):
+    return (
+        db.query(task_model.Task)
+        .filter(task_model.Task.id == task_id, task_model.Task.project_id == project_id)
+        .first()
+    )
