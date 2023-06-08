@@ -26,3 +26,14 @@ def get_task_by_id(db: Session, task_id: int, project_id: int):
         .filter(task_model.Task.id == task_id, task_model.Task.project_id == project_id)
         .first()
     )
+
+def update_task(db: Session, task_id: int, task: task_schema.TaskBase, project_id: int):
+    db_task = db.query(task_model.Task).filter(task_model.Task.id == task_id, task_model.Task.project_id == project_id).first()
+    if not task:
+        return None
+    for key, value in task.dict(exclude_unset=True).items():
+        setattr(db_task, key, value)
+    db.add(db_task)
+    db.commit()
+    db.refresh(db_task)
+    return db_task
