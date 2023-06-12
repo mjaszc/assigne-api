@@ -1,8 +1,14 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
 from app.db.database import Base
 
+task_user_table = Table(
+    "task_user",
+    Base.metadata,
+    Column("task_id", Integer, ForeignKey("tasks.id"), primary_key=True),
+    Column("user_id", Integer, ForeignKey("users.id"), primary_key=True)
+)
 
 class Task(Base):
     __tablename__ = "tasks"
@@ -13,3 +19,4 @@ class Task(Base):
     project_id = Column(Integer, ForeignKey("projects.id"))
 
     project = relationship("Project", back_populates="tasks")
+    assigned_user = relationship("User", secondary=task_user_table, back_populates="assigned_tasks")

@@ -3,6 +3,7 @@ from app.db.database import Base
 from passlib.hash import bcrypt
 from sqlalchemy.orm import relationship
 from app.models.project_model import project_user_table
+from app.models.task_model import task_user_table
 
 class User(Base):
     __tablename__ = "users"
@@ -15,6 +16,7 @@ class User(Base):
 
     projects = relationship("Project", back_populates="author")
     assigned_projects = relationship("Project", secondary=project_user_table, back_populates="assigned_users")
+    assigned_tasks = relationship("Task", secondary=task_user_table, back_populates="assigned_user")
 
     def set_password(self, password: str):
         self.password = bcrypt.hash(password)
