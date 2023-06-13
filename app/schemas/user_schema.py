@@ -1,5 +1,7 @@
 from pydantic import BaseModel, EmailStr
-from typing import Optional
+from typing import Optional, List
+
+from app.schemas.task_schema import Task
 
 # USER
 class UserBase(BaseModel):
@@ -18,6 +20,7 @@ class UserCreate(UserBase):
 class User(UserBase):
     is_active: Optional[bool]
     id: int
+    assigned_tasks: Optional[List[Task]] = []
 
     class Config:
         orm_mode = True
