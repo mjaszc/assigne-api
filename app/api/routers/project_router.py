@@ -28,11 +28,11 @@ def get_db():
 @router.post("/", response_model=project_schema.Project)
 async def create_project(
     project: project_schema.ProjectCreate,
+    user_id: int,
     db: Session = Depends(get_db),
     current_user: user_schema.User = Depends(user_crud.get_current_user),
 ):
-    current_user_id = current_user.id
-    return project_crud.create_project(db, project, current_user_id)
+    return project_crud.create_project(db, project, user_id)
 
 
 @router.get("/{id}", response_model=project_schema.Project)

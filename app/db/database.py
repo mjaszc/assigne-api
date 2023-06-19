@@ -9,9 +9,13 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
-SQLALCHEMY_DATABASE_URL = os.environ["DATABASE_URL"]
+env = os.environ["APPLICATION_ENV"]
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
+if env == "testing":
+    engine = create_engine(os.environ["TEST_DATABASE_URL"])
+else:
+    engine = create_engine(os.environ["DATABASE_URL"])
+
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()

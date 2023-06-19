@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
 from datetime import date
-from app.schemas.user_schema import User
 from typing import List
 from app.schemas.task_schema import Task
 
@@ -22,7 +21,7 @@ class ProjectUpdate(ProjectBase):
 class Project(ProjectBase):
     id: int
     start_date: date
-    author: User
+    author_id: int
     assigned_tasks: Optional[List[Task]] = []
 
     class Config:
