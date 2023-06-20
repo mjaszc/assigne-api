@@ -1,32 +1,18 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+import pytest
 from fastapi.testclient import TestClient
 
-import pytest
-import os
 from app.main import get_db, app
 import app.db.database as database
+from app.crud.user_crud import get_current_user
 
-SQLALCHEMY_DATABASE_URL = os.environ["DATABASE_URL"]
-
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
-SessionTest = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-database.Base.metadata.drop_all(bind=engine)
-database.Base.metadata.create_all(bind=engine)
-
-def override_get_db():
-    try:
-        db = SessionTest()
-        yield db
-    finally:
-        db.close()
+database.Base.metadata.drop_all(bind=database.engine)
+database.Base.metadata.create_all(bind=database.engine)
 
 @pytest.fixture()
 def session():
-    connection = engine.connect()
+    connection = database.engine.connect()
     transaction = connection.begin()
-    session = SessionTest(bind=connection)
+    session = database.SessionLocal(bind=connection)
     yield session
     session.close()
     transaction.rollback()
@@ -37,6 +23,10 @@ def client(session):
     def override_get_db():
         yield session
 
+    def skip_auth():
+        pass
+
     app.dependency_overrides[get_db] = override_get_db
+    # Avoiding Bearer Authentication
+    app.dependency_overrides[get_current_user] = skip_auth
     yield TestClient(app)
-    del app.dependency_overrides[get_db]

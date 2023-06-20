@@ -22,7 +22,7 @@ def upgrade() -> None:
         sa.Column('id', sa.Integer(), primary_key=True),
         sa.Column('title', sa.String(length=255), nullable=False),
         sa.Column('description', sa.String(), nullable=False),
-        sa.Column('project_id', sa.Integer, sa.ForeignKey("projects.id"), nullable=False),
+        sa.Column('project_id', sa.Integer(), sa.ForeignKey("projects.id"), nullable=False),
     )
 
 

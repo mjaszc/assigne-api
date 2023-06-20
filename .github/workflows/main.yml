@@ -24,6 +24,8 @@ jobs:
         echo PGADMIN_PASS=${{ secrets.PGADMIN_PASS }} >> .env
         echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
         echo ALGORITHM=${{ secrets.ALGORITHM  }} >> .env
+        echo DB_PORT=${{ secrets.DB_PORT }} >> .env
+        echo APPLICATION_ENV=${{ secrets.APPLICATION_ENV }} >> .env
 
     - name: Set up Docker Compose        
       run: |
