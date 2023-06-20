@@ -3,6 +3,7 @@ from typing import Optional
 from datetime import date
 from typing import List
 from app.schemas.task_schema import Task
+from app.schemas.user_schema import User
 
 class ProjectBase(BaseModel):
     name: str
@@ -21,7 +22,7 @@ class ProjectUpdate(ProjectBase):
 class Project(ProjectBase):
     id: int
     start_date: date
-    author_id: int
+    author: User
     assigned_tasks: Optional[List[Task]] = []
 
     class Config:
