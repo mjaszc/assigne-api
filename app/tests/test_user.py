@@ -31,13 +31,11 @@ def test_get_user_by_id(client):
     response = client.get("/api/v1/users/1")
 
     assert response.status_code == status.HTTP_200_OK
-
-    expected_data = {
+    assert response.json() == {
         "id": 1,
         "email": "user@example.com",
         "username": "string",
         "is_active": True,
         "assigned_tasks": []
     }
-    assert response.json() == expected_data
 
