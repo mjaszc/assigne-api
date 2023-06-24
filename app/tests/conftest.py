@@ -30,3 +30,5 @@ def client(session):
     # Avoiding Bearer Authentication
     app.dependency_overrides[get_current_user] = skip_auth
     yield TestClient(app)
+    del app.dependency_overrides[get_db]
+    del app.dependency_overrides[get_current_user]
