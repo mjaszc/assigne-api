@@ -226,3 +226,81 @@ def test_get_all_projects_db(session):
     db_projects = session.query(project_model.Project).offset(0).limit(100).all()
     assert db_projects is not None
 
+# UPDATE PROJECT BY ID
+def test_update_project_by_id(client):
+    project_data = {
+        "name": "Test Project",
+        "description": "Test Test Test"
+    }
+
+    mock_create_project = MagicMock(return_value=project_schema.Project(
+        id=1,
+        name=project_data["name"],
+        description=project_data["description"],
+        start_date="2023-06-20",
+        author=user_schema.User(
+            id=1,
+            email="user@example.com",
+            username="string",
+            is_active=True,
+            assigned_tasks=[]
+        ),
+        assigned_tasks=[]
+    ))
+    project_crud.create_project = mock_create_project
+
+    response = client.post("/api/v1/projects", json=project_data)
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json() == {
+        "id": 1,
+        "name": "Test Project",
+        "description": "Test Test Test",
+        "start_date": "2023-06-20",
+        "author": {
+            "id": 1,
+            "email": "user@example.com",
+            "username": "string",
+            "is_active": True,
+            "assigned_tasks": []
+        },
+        "assigned_tasks": []
+    }
+
+    updated_project_data = {
+        "name": "Modified Project",
+        "description": "Modified Project Description"
+    }
+
+    mock_update_project = MagicMock(return_value=project_schema.Project(
+        id=1,
+        name=updated_project_data["name"],
+        description=updated_project_data["description"],
+        start_date="2023-06-20",
+        author=user_schema.User(
+            id=1,
+            email="user@example.com",
+            username="string",
+            is_active=True,
+            assigned_tasks=[]
+        ),
+        assigned_tasks=[]
+    ))
+    project_crud.update_project = mock_update_project
+
+    response = client.put("/api/v1/projects/1", json=updated_project_data)
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json() == {
+        "id": 1,
+        "name": "Modified Project",
+        "description": "Modified Project Description",
+        "start_date": "2023-06-20",
+        "author": {
+            "id": 1,
+            "email": "user@example.com",
+            "username": "string",
+            "is_active": True,
+            "assigned_tasks": []
+        },
+        "assigned_tasks": []
+    }
+
