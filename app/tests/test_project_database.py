@@ -1,44 +1,33 @@
+import pytest
+from datetime import datetime
+from fastapi import HTTPException
+
 import app.models.project_model as project_model
 import app.crud.project_crud as project_crud
 import app.schemas.project_schema as project_schema
 import app.schemas.user_schema as user_schema
 import app.models.user_model as user_model
+import app.crud.user_crud as user_crud
+
 
 # CRUD DATABASE OPERATIONS FOR PROJECT 
 
 
 # CREATE PROJECT
 def test_create_project_db(session):
-    test_user = user_schema.User(
-        username="test_user",
-        email="test_user@example.com",
-        password="test_password",
-        id=1,
-        is_active=True,
-        assigned_tasks=[]
-    )
+    user = user_schema.UserCreate(username="test_user", email="test_email@example.com", password="test_password")
+    user = user_crud.create_user(session, user)
 
-    test_project = project_schema.ProjectCreate(
-        name="Test Project",
-        description="Test Description"
-    )
+    project = project_schema.ProjectCreate(name="test_project", description="test_description")
+    created_project = project_crud.create_project(session, project, user)
+    assert created_project.name == project.name
+    assert created_project.description == project.description
+    assert created_project.start_date.date() == datetime.utcnow().date()
+    assert created_project.author_id == user.id
 
-    db_user = user_model.User(
-        username="test_user",
-        email="test_user@example.com",
-        password="test_password",
-        id=1,
-        is_active=True
-    )
-
-    # Adding user to the database in order to assign him as a project author
-    session.add(db_user)
-    session.commit()
-
-    project_crud.create_project(session, test_project, test_user)
-    db_project = session.query(project_model.Project).filter(project_model.Project.name == test_project.name).first()
-    assert db_project is not None
-
+    # Try to create project with the same name
+    with pytest.raises(HTTPException):
+        project_crud.create_project(session, project, user)
 
 # UPDATE PROJECT
 def test_update_project_db(session):
@@ -64,7 +53,7 @@ def test_update_project_db(session):
     updated_project = project_schema.ProjectUpdate(**updated_data)
     updated_project = project_crud.update_project(session, test_project.id, updated_project)
 
-    # check that the updated project has the correct data
+    # Check that the updated project has the correct data
     assert updated_project.name == "Updated Project Name"
     assert updated_project.description == "This is the updated project description."
 
@@ -75,6 +64,22 @@ def test_update_project_db(session):
 
     session.delete(test_project)
     session.commit()
+
+def test_get_project_by_id(session):
+    user = user_schema.UserCreate(username="test_user", email="test_email@example.com", password="test_password")
+    user = user_crud.create_user(session, user)
+
+    project = project_schema.ProjectCreate(name="test_project", description="test_description")
+    created_project = project_crud.create_project(session, project, user)
+    project_id = created_project.id
+    response = project_crud.get_project(session, project_id)
+
+    assert response.id == created_project.id
+    assert response.name == created_project.name
+    assert response.description == created_project.description
+    assert response.start_date == created_project.start_date
+    assert response.author == user
+    assert response.assigned_users == []
 
 
 # GET ALL PROJECTS
