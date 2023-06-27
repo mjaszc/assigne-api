@@ -1,52 +1,20 @@
 from fastapi import status
 from unittest.mock import MagicMock
-import app.models.project_model as project_model
 import app.crud.project_crud as project_crud
 import app.schemas.project_schema as project_schema
 import app.schemas.user_schema as user_schema
-import app.models.user_model as user_model
 
-# CRUD PROJECT
+# ENDPOINTS FOR PROJECT    
 
-# CREATE PROJECT
-def test_create_project_db(session):
-    test_user = user_schema.User(
-        username="test_user",
-        email="test_user@example.com",
-        password="test_password",
-        id=1,
-        is_active=True,
-        assigned_tasks=[]
-    )
 
-    test_project = project_schema.ProjectCreate(
-        name="Test Project",
-        description="Test Description"
-    )
-
-    db_user = user_model.User(
-        username="test_user",
-        email="test_user@example.com",
-        password="test_password",
-        id=1,
-        is_active=True
-    )
-
-    # Adding user to the database in order to assign him as a project author
-    session.add(db_user)
-    session.commit()
-
-    project_crud.create_project(session, test_project, test_user)
-    db_project = session.query(project_model.Project).filter(project_model.Project.name == test_project.name).first()
-    assert db_project is not None
-
+# CREATE PROJECT ENDPOINT
 def test_create_project(client):
     project_data = {
         "name": "Test Project",
         "description": "Test Test Test"
     }
 
-    mock_create_project = MagicMock(return_value = project_schema.Project(
+    mock_create_project = MagicMock(return_value=project_schema.Project(
         id=1,
         name=project_data["name"],
         description=project_data["description"],
@@ -80,7 +48,8 @@ def test_create_project(client):
         "assigned_tasks": []
     }
 
-# GET PROJECT BY ID
+
+# GET PROJECT BY ID ENDPOINT
 def test_get_project_by_id(client):
     mock_get_project = MagicMock(return_value=project_schema.Project(
         id=1,
@@ -116,7 +85,8 @@ def test_get_project_by_id(client):
         "assigned_tasks": []
     }
 
-# GET ALL PROJECTS
+
+# GET ALL PROJECTS ENDPOINT
 def test_get_all_projects(client, monkeypatch):
     mock_create_project_1 = MagicMock(return_value=project_schema.Project(
         id=1,
@@ -188,45 +158,8 @@ def test_get_all_projects(client, monkeypatch):
         }
     ]
 
-def test_get_all_projects_db(session):
-    test_user = user_schema.User(
-        username="test_user",
-        email="test_user@example.com",
-        password="test_password",
-        id=1,
-        is_active=True,
-        assigned_tasks=[]
-    )
 
-    test_project_1 = project_schema.ProjectCreate(
-        name="Test Project One",
-        description="Test Description One"
-    )
-
-    test_project_2 = project_schema.ProjectCreate(
-        name="Test Project Two",
-        description="Test Description Two"
-    )
-
-    db_user = user_model.User(
-        username="test_user",
-        email="test_user@example.com",
-        password="test_password",
-        id=1,
-        is_active=True
-    )
-
-    session.add(db_user)
-    session.commit()
-
-    project_crud.create_project(session, test_project_1, test_user)
-    project_crud.create_project(session, test_project_2, test_user)
-
-    project_crud.get_all_projects(session, 0, 100)
-    db_projects = session.query(project_model.Project).offset(0).limit(100).all()
-    assert db_projects is not None
-
-# UPDATE PROJECT BY ID
+# UPDATE PROJECT BY ID ENDPOINT
 def test_update_project_by_id(client):
     project_data = {
         "name": "Test Project",
@@ -303,4 +236,3 @@ def test_update_project_by_id(client):
         },
         "assigned_tasks": []
     }
-
