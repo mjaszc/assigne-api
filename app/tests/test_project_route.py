@@ -7,7 +7,7 @@ import app.schemas.user_schema as user_schema
 # ENDPOINTS FOR PROJECT    
 
 
-# CREATE PROJECT ENDPOINT
+# CREATE PROJECT
 def test_create_project(client):
     project_data = {
         "name": "Test Project",
@@ -49,7 +49,7 @@ def test_create_project(client):
     }
 
 
-# GET PROJECT BY ID ENDPOINT
+# GET PROJECT BY ID
 def test_get_project_by_id(client):
     mock_get_project = MagicMock(return_value=project_schema.Project(
         id=1,
@@ -86,7 +86,7 @@ def test_get_project_by_id(client):
     }
 
 
-# GET ALL PROJECTS ENDPOINT
+# GET ALL PROJECTS
 def test_get_all_projects(client, monkeypatch):
     mock_create_project_1 = MagicMock(return_value=project_schema.Project(
         id=1,
@@ -159,7 +159,7 @@ def test_get_all_projects(client, monkeypatch):
     ]
 
 
-# UPDATE PROJECT BY ID ENDPOINT
+# UPDATE PROJECT BY ID
 def test_update_project_by_id(client):
     project_data = {
         "name": "Test Project",
@@ -240,3 +240,47 @@ def test_update_project_by_id(client):
         },
         "assigned_tasks": []
     }
+
+
+# DELETE PROJECT
+def test_delete_project(client):
+    project_data = {
+        "name": "Project to be removed",
+        "description": "Removed project description."
+    }
+
+    mock_create_project = MagicMock(return_value=project_schema.Project(
+        id=1,
+        name=project_data["name"],
+        description=project_data["description"],
+        start_date="2023-06-20",
+        author=user_schema.User(
+            id=1,
+            email="user@example.com",
+            username="string",
+            is_active=True,
+            assigned_tasks=[]
+        ),
+        assigned_tasks=[]
+    ))
+    project_crud.create_project = mock_create_project
+
+    response = client.post("/api/v1/projects", json=project_data)
+    assert response.status_code == status.HTTP_200_OK
+    assert response.json() == {
+        "id": 1,
+        "name": "Project to be removed",
+        "description": "Removed project description.",
+        "start_date": "2023-06-20",
+        "author": {
+            "id": 1,
+            "email": "user@example.com",
+            "username": "string",
+            "is_active": True,
+            "assigned_tasks": []
+        },
+        "assigned_tasks": []
+    }
+
+    delete_response = client.delete("/api/v1/projects/1")
+    assert delete_response.status_code == 204
