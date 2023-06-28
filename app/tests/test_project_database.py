@@ -65,6 +65,7 @@ def test_update_project_db(session):
     session.delete(test_project)
     session.commit()
 
+# GET PROJECT BY ID
 def test_get_project_by_id(session):
     user = user_schema.UserCreate(username="test_user", email="test_email@example.com", password="test_password")
     user = user_crud.create_user(session, user)
@@ -121,3 +122,30 @@ def test_get_all_projects_db(session):
     db_projects = session.query(project_model.Project).offset(0).limit(100).all()
     assert db_projects is not None
 
+# DELETE PROJECT
+def test_delete_project(session):
+    test_project = project_model.Project(
+        id=1,
+        name="Test Project",
+        description="This is a test project.",
+        start_date="2023-06-20",
+        author=user_model.User(
+            id=1,
+            email="user@example.com",
+            username="string",
+            is_active=True,
+            assigned_tasks=[]
+        ),
+        assigned_users=[]
+    )
+
+    session.add(test_project)
+    session.commit()
+
+    result = project_crud.delete_project(session, test_project.id)
+    assert result is True
+    assert session.query(project_model.Project).filter(project_model.Project.id == test_project.id).first() is None
+
+    # Test deleting non-existent project
+    result = project_crud.delete_project(session, test_project.id)
+    assert result is False

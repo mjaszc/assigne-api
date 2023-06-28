@@ -219,8 +219,12 @@ def test_update_project_by_id(client):
         assigned_tasks=[]
     ))
     project_crud.update_project = mock_update_project
+    project_crud.get_project = mock_update_project
 
-    response = client.put("/api/v1/projects/1", json=updated_project_data)
+    mock_project = mock_update_project()
+    mock_project_id = mock_project.id
+
+    response = client.put(f"/api/v1/projects/{mock_project_id}", json=updated_project_data)
     assert response.status_code == status.HTTP_200_OK
     assert response.json() == {
         "id": 1,
