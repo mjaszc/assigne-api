@@ -29,6 +29,7 @@ jobs:
 
     - name: Set up Docker Compose        
       run: |
+          sudo sed -i 's/azure\.//' /etc/apt/sources.list
           sudo apt-get update
           sudo apt-get install -y docker-compose
           sudo docker-compose --version
