@@ -14,7 +14,7 @@ import app.crud.user_crud as user_crud
 
 
 # CREATE PROJECT
-def test_create_project_db(session):
+def test_create_project(session):
     user = user_schema.UserCreate(username="test_user", email="test_email@example.com", password="test_password")
     user = user_crud.create_user(session, user)
 
@@ -30,7 +30,7 @@ def test_create_project_db(session):
         project_crud.create_project(session, project, user)
 
 # UPDATE PROJECT
-def test_update_project_db(session):
+def test_update_project(session):
     test_project = project_model.Project(
         id=1,
         name="Test Project",
@@ -84,7 +84,7 @@ def test_get_project_by_id(session):
 
 
 # GET ALL PROJECTS
-def test_get_all_projects_db(session):
+def test_get_all_projects(session):
     test_user = user_schema.User(
         username="test_user",
         email="test_user@example.com",
