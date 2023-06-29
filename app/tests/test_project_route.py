@@ -283,4 +283,4 @@ def test_delete_project(client):
     }
 
     delete_response = client.delete("/api/v1/projects/1")
-    assert delete_response.status_code == 204
+    assert delete_response.status_code == status.HTTP_204_NO_CONTENT
