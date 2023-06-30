@@ -40,7 +40,7 @@ async def get_task_by_id(
 
 @router.put("/{task_id}", response_model=task_schema.Task)
 async def update_task_by_id(
-    id: int,
+    task_id: int,
     task: task_schema.TaskBase,
     project_id: int,
     db: Session = Depends(get_db),
