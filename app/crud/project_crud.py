@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import exists
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 
 import app.models.project_model as project_model
 import app.schemas.project_schema as project_schema
@@ -11,8 +11,15 @@ from datetime import datetime
 
 
 def create_project(db: Session, project: project_schema.ProjectCreate, current_user: user_schema.User):
+    # Validation for empty fields
+    if not project.name.strip():
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Project name cannot be empty.")
+
+    if not project.description.strip():
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Project description cannot be empty.")
+
     if db.query(exists().where(project_model.Project.name == project.name)).scalar():
-        raise HTTPException(status_code=400, detail="Project with the same name already exists.")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Project with the same name already exists.")
 
     db_project = project_model.Project(
         name=project.name,
@@ -65,11 +72,11 @@ def delete_project(db: Session, project_id: int):
 def assign_user_to_project(db: Session, project_id: int, user_id: int):
     project = db.query(project_model.Project).filter(project_model.Project.id == project_id).first()
     if not project:
-        raise HTTPException(status_code=404, detail=f"Project with ID {project_id} not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Project with ID {project_id} not found")
 
     user = db.query(user_model.User).filter(user_model.User.id == user_id).first()
     if not user:
-        raise HTTPException(status_code=404, detail=f"User with ID {user_id} not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with ID {user_id} not found")
 
     project.assigned_users.append(user)
     db.commit()
