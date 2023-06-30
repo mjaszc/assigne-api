@@ -29,7 +29,7 @@ def get_task_by_id(db: Session, task_id: int, project_id: int):
         .first()
     )
 
-def update_task(db: Session, task_id: int, task: task_schema.TaskBase, project_id: int):
+def update_task(db: Session, task_id: int, task: task_schema.Task, project_id: int):
     db_task = db.query(task_model.Task).filter(task_model.Task.id == task_id, task_model.Task.project_id == project_id).first()
     if not db_task:
         return None
