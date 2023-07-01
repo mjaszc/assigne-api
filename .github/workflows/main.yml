@@ -43,8 +43,14 @@ jobs:
     - name: UnitTest with pytest
       run: |
         pytest
+
+    - name: Coverage report
+      run: |
+        pip install coverage
+        coverage run -m pytest
+        coverage report
       
-    - name: Create env file
+    - name: Create env file for Docker Compose
       run: |
         touch .env
         echo DB_USER=${{ secrets.DB_USER }} >> .env
