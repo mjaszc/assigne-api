@@ -33,13 +33,18 @@ jobs:
       run: |
         pip install -r requirements.txt
         python -m pip install --upgrade pip
+
+    - name: Create env file
+      run: |
+        touch .env
+        echo APPLICATION_ENV=${secrets.APPLICATION_ENV_LOCAL_TEST} >> .env
       
     - name: UnitTest with pytest
       run: |
         pip3 install pytest
         pytest
       
-    - name: create env file
+    - name: Create env file
       run: |
         touch .env
         echo DB_USER=${{ secrets.DB_USER }} >> .env
