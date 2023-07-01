@@ -29,11 +29,12 @@ jobs:
     - name: Check out the repo
       uses: actions/checkout@v3
 
-    - name: Install necessary packages
+    - name: Install Dependencies
       run: |
-        pip install "fastapi[all]" sqlalchemy pytest
+        pip install -r requirements.txt
+        python -m pip install --upgrade pip
 
-    - name: Create env file
+    - name: Create env file for local testing with pytest
       run: |
         touch .env
         echo APPLICATION_ENV=${{ secrets.APPLICATION_ENV_LOCAL_TEST }} >> .env
