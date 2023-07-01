@@ -37,7 +37,7 @@ jobs:
     - name: Create env file
       run: |
         touch .env
-        echo APPLICATION_ENV=${secrets.APPLICATION_ENV_LOCAL_TEST} >> .env
+        echo APPLICATION_ENV=${{ secrets.APPLICATION_ENV_LOCAL_TEST }} >> .env
       
     - name: UnitTest with pytest
       run: |
