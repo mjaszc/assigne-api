@@ -100,7 +100,6 @@ def test_get_all_projects(client, monkeypatch):
             is_active=True,
             assigned_tasks=[]
         ),
-        assigned_tasks=[]
     ))
 
     mock_create_project_2 = MagicMock(return_value=project_schema.Project(
@@ -115,7 +114,6 @@ def test_get_all_projects(client, monkeypatch):
             is_active=True,
             assigned_tasks=[]
         ),
-        assigned_tasks=[]
     ))
 
     def mock_get_all_projects(db, skip, limit):
@@ -140,7 +138,6 @@ def test_get_all_projects(client, monkeypatch):
                 "is_active": True,
                 "assigned_tasks": []
             },
-            "assigned_tasks": []
         },
         {
             "id": 2,
@@ -154,7 +151,6 @@ def test_get_all_projects(client, monkeypatch):
                 "is_active": True,
                 "assigned_tasks": []
             },
-            "assigned_tasks": []
         }
     ]
 
