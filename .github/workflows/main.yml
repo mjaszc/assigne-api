@@ -16,7 +16,7 @@ jobs:
 
     - name: Install necessary packages
       run: |
-        pip install "fastapi[all]"
+        pip install "fastapi[all]" sqlalchemy pytest
 
     - name: Create env file
       run: |
@@ -26,7 +26,6 @@ jobs:
       
     - name: UnitTest with pytest
       run: |
-        pip3 install pytest
         pytest
       
     - name: Create env file
