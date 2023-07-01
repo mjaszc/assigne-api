@@ -10,7 +10,6 @@ class ProjectBase(BaseModel):
     description: Optional[str]
 
 
-
 class ProjectCreate(ProjectBase):
     pass
 
@@ -18,6 +17,13 @@ class ProjectCreate(ProjectBase):
 class ProjectUpdate(ProjectBase):
     pass
 
+class ProjectWithoutTasks(ProjectBase):
+    id: int
+    start_date: date
+    author: User
+
+    class Config:
+        orm_mode = True
 
 class Project(ProjectBase):
     id: int
