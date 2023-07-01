@@ -46,11 +46,11 @@ async def update_task_by_id(
     db: Session = Depends(get_db),
     current_user: user_schema.User = Depends(user_crud.get_current_user),
 ):
-    get_task = task_crud.get_task_by_id(db, id, project_id)
+    get_task = task_crud.get_task_by_id(db, task_id, project_id)
     if get_task is None:
         raise HTTPException(status_code=404, detail="Task not found")
 
-    updated_task = task_crud.update_task(db, id, task, project_id)
+    updated_task = task_crud.update_task(db, task_id, task, project_id)
     return updated_task
 
 @router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)

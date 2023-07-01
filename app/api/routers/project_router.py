@@ -57,7 +57,7 @@ async def get_project_by_id(
 
     return project_response
 
-@router.get("/", response_model=List[project_schema.Project])
+@router.get("/", response_model=List[project_schema.ProjectWithoutTasks])
 async def get_all_projects(
     skip: int = 0,
     limit: int = 100,
