@@ -34,7 +34,7 @@ jobs:
         pip install -r requirements.txt
         python -m pip install --upgrade pip
 
-    - name: Create env file for local testing with pytest
+    - name: Create local env file for pytest
       run: |
         touch .env
         echo APPLICATION_ENV=${{ secrets.APPLICATION_ENV_LOCAL_TEST }} >> .env
