@@ -9,11 +9,48 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      postgres_main:
+        image: postgres:15
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready 
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
+        
     steps:
     - name: Check out the repo
       uses: actions/checkout@v3
+
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt
+        python -m pip install --upgrade pip
+
+    - name: Create local env file for pytest
+      run: |
+        touch .env
+        echo APPLICATION_ENV=${{ secrets.APPLICATION_ENV_LOCAL_TEST }} >> .env
+        echo TEST_DATABASE_URL=${{ secrets.TEST_DATABASE_URL }} >> .env
       
-    - name: create env file
+    - name: UnitTest with pytest
+      run: |
+        pytest
+
+    - name: Coverage report
+      run: |
+        pip install coverage
+        coverage run -m pytest
+        coverage report
+      
+    - name: Create env file for Docker Compose
       run: |
         touch .env
         echo DB_USER=${{ secrets.DB_USER }} >> .env
