@@ -2,10 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 import app.schemas.task_schema as task_schema
-import app.crud.task_crud as task_crud
 from app.db.database import SessionLocal
 import app.schemas.user_schema as user_schema
+import app.crud.task_crud as task_crud
 import app.crud.user_crud as user_crud
+import app.crud.project_crud as project_crud
 
 router = APIRouter(prefix="/api/v1/projects/{project_id}/tasks")
 
@@ -24,6 +25,9 @@ async def create_task(
     db: Session = Depends(get_db),
     current_user: user_schema.User = Depends(user_crud.get_current_user),
 ):
+    project = project_crud.get_project(db, project_id)
+    if project is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Project not found")
     return task_crud.create_task(db, task, project_id)
 
 @router.get("/{task_id}", response_model=task_schema.Task)
@@ -35,7 +39,7 @@ async def get_task_by_id(
 ):
     task = task_crud.get_task_by_id(db, task_id, project_id)
     if task is None:
-        raise HTTPException(status_code=404, detail="Task not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Task not found")
     return task
 
 @router.put("/{task_id}", response_model=task_schema.Task)
@@ -48,7 +52,7 @@ async def update_task_by_id(
 ):
     get_task = task_crud.get_task_by_id(db, task_id, project_id)
     if get_task is None:
-        raise HTTPException(status_code=404, detail="Task not found")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Task not found")
 
     updated_task = task_crud.update_task(db, task_id, task, project_id)
     return updated_task
