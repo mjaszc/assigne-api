@@ -30,6 +30,7 @@ class Project(ProjectBase):
     start_date: date
     author: User
     assigned_tasks: Optional[List[Task]] = []
+    assigned_users: Optional[List[User]] = []
 
     class Config:
         orm_mode = True

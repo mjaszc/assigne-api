@@ -26,7 +26,8 @@ def test_create_project(client):
             is_active=True,
             assigned_tasks=[]
         ),
-        assigned_tasks=[]
+        assigned_tasks=[],
+        assigned_users=[]
     ))
     project_crud.create_project = mock_create_project
 
@@ -45,7 +46,8 @@ def test_create_project(client):
             "is_active": True,
             "assigned_tasks": []
         },
-        "assigned_tasks": []
+        "assigned_tasks": [],
+        "assigned_users": []
     }
 
 
@@ -63,7 +65,8 @@ def test_get_project_by_id(client):
             is_active=True,
             assigned_tasks=[]
         ),
-        assigned_tasks=[]
+        assigned_tasks=[],
+        assigned_users=[]
     ))
     project_crud.get_project = mock_get_project
 
@@ -82,7 +85,8 @@ def test_get_project_by_id(client):
             "is_active": True,
             "assigned_tasks": []
         },
-        "assigned_tasks": []
+        "assigned_tasks": [],
+        "assigned_users": []
     }
 
 
@@ -174,7 +178,8 @@ def test_update_project_by_id(client):
             is_active=True,
             assigned_tasks=[]
         ),
-        assigned_tasks=[]
+        assigned_tasks=[],
+        assigned_users=[]
     ))
     project_crud.create_project = mock_create_project
 
@@ -192,7 +197,8 @@ def test_update_project_by_id(client):
             "is_active": True,
             "assigned_tasks": []
         },
-        "assigned_tasks": []
+        "assigned_tasks": [],
+        "assigned_users": []
     }
 
     updated_project_data = {
@@ -212,7 +218,8 @@ def test_update_project_by_id(client):
             is_active=True,
             assigned_tasks=[]
         ),
-        assigned_tasks=[]
+        assigned_tasks=[],
+        assigned_users=[]
     ))
     project_crud.update_project = mock_update_project
     project_crud.get_project = mock_update_project
@@ -234,7 +241,8 @@ def test_update_project_by_id(client):
             "is_active": True,
             "assigned_tasks": []
         },
-        "assigned_tasks": []
+        "assigned_tasks": [],
+        "assigned_users": []
     }
 
 
@@ -257,7 +265,8 @@ def test_delete_project(client):
             is_active=True,
             assigned_tasks=[]
         ),
-        assigned_tasks=[]
+        assigned_tasks=[],
+        assigned_users=[]
     ))
     project_crud.create_project = mock_create_project
 
@@ -275,7 +284,8 @@ def test_delete_project(client):
             "is_active": True,
             "assigned_tasks": []
         },
-        "assigned_tasks": []
+        "assigned_tasks": [],
+        "assigned_users": []
     }
 
     delete_response = client.delete("/api/v1/projects/1")

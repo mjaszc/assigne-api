@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import exists
 from fastapi import HTTPException, status
 
@@ -81,3 +81,11 @@ def assign_user_to_project(db: Session, project_id: int, user_id: int):
     project.assigned_users.append(user)
     db.commit()
     return True
+
+def get_assigned_users_id_to_project(db: Session, project_id: int):
+    # Getting the the project_id from the associated table to the project table named assigned_users
+    project = db.query(project_model.Project).options(joinedload(project_model.Project.assigned_users)).filter(project_model.Project.id == project_id).first()
+    if project:
+        # Getting id's of users that are assigned to a specified project
+        assigned_users_id = [user.id for user in project.assigned_users]        
+        return assigned_users_id
