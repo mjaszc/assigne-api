@@ -46,13 +46,16 @@ async def get_project_by_id(
         raise HTTPException(status_code=404, detail="Project not found")
 
     assigned_tasks = task_crud.get_assigned_tasks(db, id)
+    assigned_users_ids = project_crud.get_assigned_users_id_to_project(db, id)
+    assigned_users_list = user_crud.get_users_by_ids(db, assigned_users_ids)
     project_response = project_schema.Project(
         id=project.id,
         name=project.name,
         description=project.description,
         start_date=project.start_date,
         author=project.author,
-        assigned_tasks=assigned_tasks
+        assigned_tasks=assigned_tasks,
+        assigned_users=assigned_users_list
     )
 
     return project_response

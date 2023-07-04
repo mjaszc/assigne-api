@@ -10,7 +10,7 @@ from fastapi import Depends, HTTPException, status
 from jose import JWTError, jwt
 
 from datetime import datetime, timedelta
-from typing import Optional, Annotated
+from typing import Optional, Annotated, List
 from dotenv import dotenv_values
 
 
@@ -65,6 +65,10 @@ def get_all_users(db: Session, skip: int = 0, limit: int = 100):
 
 def get_user_by_id(db: Session, user_id: int) -> Optional[user_model.User]:
     return db.query(user_model.User).filter(user_model.User.id == user_id).first()
+
+def get_users_by_ids(db: Session, user_ids: List[int]):
+    users = db.query(user_model.User).filter(user_model.User.id.in_(user_ids)).all()
+    return users
 
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
