@@ -24,7 +24,8 @@ def test_create_task(client):
             is_active=True,
             assigned_tasks=[]
         ),
-        assigned_tasks=[]
+        assigned_tasks=[],
+        assigned_users=[]
     ))
     project_crud.create_project = mock_create_project
 
@@ -43,7 +44,8 @@ def test_create_task(client):
             "is_active": True,
             "assigned_tasks": []
         },
-        "assigned_tasks": []
+        "assigned_tasks": [],
+        "assigned_users":[]
     }
 
     task_data = {
@@ -85,7 +87,8 @@ def test_get_task(client):
             is_active=True,
             assigned_tasks=[]
         ),
-        assigned_tasks=[]
+        assigned_tasks=[],
+        assigned_users=[]
     ))
     project_crud.create_project = mock_create_project
 
@@ -104,7 +107,8 @@ def test_get_task(client):
             "is_active": True,
             "assigned_tasks": []
         },
-        "assigned_tasks": []
+        "assigned_tasks": [],
+        "assigned_users": []
     }
 
     mock_get_task = MagicMock(return_value=task_schema.Task(
@@ -142,7 +146,8 @@ def test_update_task(client):
             is_active=True,
             assigned_tasks=[]
         ),
-        assigned_tasks=[]
+        assigned_tasks=[],
+        assigned_users=[]
     ))
     project_crud.create_project = mock_create_project
     project_crud.get_project = mock_create_project
@@ -161,7 +166,8 @@ def test_update_task(client):
             "is_active": True,
             "assigned_tasks": []
         },
-        "assigned_tasks": []
+        "assigned_tasks": [],
+        "assigned_users": []
     }
 
     task_data = {
@@ -230,7 +236,8 @@ def test_delete_task(client):
             is_active=True,
             assigned_tasks=[]
         ),
-        assigned_tasks=[]
+        assigned_tasks=[],
+        assigned_users=[]
     ))
     project_crud.create_project = mock_create_project
     project_crud.get_project = mock_create_project
@@ -249,7 +256,8 @@ def test_delete_task(client):
             "is_active": True,
             "assigned_tasks": []
         },
-        "assigned_tasks": []
+        "assigned_tasks": [],
+        "assigned_users": []
     }
 
     task_data = {

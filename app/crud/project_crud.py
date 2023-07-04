@@ -88,4 +88,4 @@ def get_assigned_users_id_to_project(db: Session, project_id: int):
     if project:
         # Getting id's of users that are assigned to a specified project
         assigned_users_id = [user.id for user in project.assigned_users]        
-    return assigned_users_id
+        return assigned_users_id
