@@ -20,6 +20,7 @@ class ProjectUpdate(ProjectBase):
 class ProjectWithoutTasks(ProjectBase):
     id: int
     start_date: date
+    due_date: Optional[date]
     author: User
 
     class Config:
