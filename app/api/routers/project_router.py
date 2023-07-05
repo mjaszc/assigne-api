@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
+import datetime
 
 import app.schemas.project_schema as project_schema
 import app.crud.project_crud as project_crud
@@ -31,6 +32,10 @@ async def create_project(
     db: Session = Depends(get_db),
     current_user: user_schema.User = Depends(user_crud.get_current_user),
 ):
+    # Validation: Due Date property, cannot be earlier than today's date
+    if project.due_date < datetime.date.today():
+        raise HTTPException(status_code=404, detail="Invalid Due Date property")
+
     current_user = current_user
     return project_crud.create_project(db, project, current_user)
 
