@@ -1,4 +1,4 @@
-from sqlalchemy import Column, DateTime, Integer, String, ForeignKey, Table
+from sqlalchemy import Column, Date, Integer, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
 from app.db.database import Base
@@ -17,7 +17,8 @@ class Project(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, index=True)
     description = Column(String)
-    start_date = Column(DateTime)
+    start_date = Column(Date)
+    due_date = Column(Date)
     author_id = Column(Integer, ForeignKey("users.id"))
 
     author = relationship("User", back_populates="projects")

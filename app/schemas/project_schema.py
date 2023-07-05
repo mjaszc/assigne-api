@@ -7,11 +7,11 @@ from app.schemas.user_schema import User
 
 class ProjectBase(BaseModel):
     name: str
-    description: Optional[str]
+    description: str
 
 
 class ProjectCreate(ProjectBase):
-    pass
+    due_date: Optional[date]
 
 
 class ProjectUpdate(ProjectBase):
@@ -28,6 +28,7 @@ class ProjectWithoutTasks(ProjectBase):
 class Project(ProjectBase):
     id: int
     start_date: date
+    due_date: Optional[date]
     author: User
     assigned_tasks: Optional[List[Task]] = []
     assigned_users: Optional[List[User]] = []

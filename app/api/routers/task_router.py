@@ -72,10 +72,10 @@ async def delete_task(
 
 @router.post("/{task_id}/assign/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def assign_task_to_user(
-    id: int,
+    task_id: int,
     project_id: int,
     user_id: int,
     db: Session = Depends(get_db),
     current_user: user_schema.User = Depends(user_crud.get_current_user),
 ):
-    task_crud.assign_user_to_task(db, id, project_id, user_id)
+    task_crud.assign_user_to_task(db, task_id, project_id, user_id)
