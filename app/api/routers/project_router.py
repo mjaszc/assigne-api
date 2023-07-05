@@ -55,6 +55,7 @@ async def get_project_by_id(
         name=project.name,
         description=project.description,
         start_date=project.start_date,
+        due_date=project.due_date,
         author=project.author,
         assigned_tasks=assigned_tasks,
         assigned_users=assigned_users_list
