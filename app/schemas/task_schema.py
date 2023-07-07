@@ -1,9 +1,9 @@
 from pydantic import BaseModel
 from enum import Enum
-from typing import Optional
 
 
 class Status(str, Enum):
+    NO_STATUS = "No Status"
     TODO = "Todo"
     IN_PROGRESS = "In Progress"
     DONE = "Done"
@@ -12,11 +12,13 @@ class Status(str, Enum):
 class TaskBase(BaseModel):
     title: str
     description: str
-
-
+    status: Status
 
 class TaskCreate(TaskBase):
-    status: Optional[Status]
+    pass
+
+class TaskUpdate(TaskBase):
+    pass
 
 class ProjectTasks(TaskBase):
     id: int
@@ -25,7 +27,7 @@ class ProjectTasks(TaskBase):
         orm_mode = True
 
 class Task(TaskBase):
-    status: Optional[Status]
+    status: Status
     id: int
 
     class Config:

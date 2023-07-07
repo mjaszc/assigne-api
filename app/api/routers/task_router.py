@@ -54,8 +54,7 @@ async def update_task_by_id(
     if get_task is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Task not found")
 
-    updated_task = task_crud.update_task(db, task_id, task, project_id)
-    return updated_task
+    return task_crud.update_task(db, task_id, task, project_id)
 
 @router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_task(
