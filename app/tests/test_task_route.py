@@ -53,13 +53,15 @@ def test_create_task(client):
 
     task_data = {
         "title": "test_task",
-        "description": "test_desc"
+        "description": "test_desc",
+        "status": "Todo"
     }
 
     mock_create_task = MagicMock(return_value=task_schema.Task(
         id=1,
-        title="test_task",
-        description="test_desc"
+        title=task_data["title"],
+        description=task_data["description"],
+        status=task_data["status"]
     ))
 
     task_crud.create_task = mock_create_task
@@ -69,7 +71,9 @@ def test_create_task(client):
     assert create_task_response.json() == {
         "title": "test_task",
         "description": "test_desc",
+        "status": "Todo",
         "id": 1,
+
     }
 
 def test_get_task(client):
@@ -120,7 +124,8 @@ def test_get_task(client):
     mock_get_task = MagicMock(return_value=task_schema.Task(
         id=1,
         title="test_task",
-        description="test_desc"
+        description="test_desc",
+        status="Todo"
     ))
 
     task_crud.get_task_by_id = mock_get_task
@@ -131,6 +136,7 @@ def test_get_task(client):
     assert response.json() == {
         "title": "test_task",
         "description": "test_desc",
+        "status": "Todo",
         "id": 1,
     }
 
@@ -181,13 +187,15 @@ def test_update_task(client):
 
     task_data = {
         "title": "test_task",
-        "description": "test_desc"
+        "description": "test_desc",
+        "status": "Todo"
     }
 
     mock_create_task = MagicMock(return_value=task_schema.Task(
         id=1,
         title=task_data["title"],
         description=task_data["description"],
+        status=task_data["status"]
     ))
 
     task_crud.create_task = mock_create_task
@@ -199,18 +207,21 @@ def test_update_task(client):
     assert create_task_response.json() == {
         "title": "test_task",
         "description": "test_desc",
+        "status": "Todo",
         "id": 1,
     }
 
     updated_task_data = {
         "title": "Updated task",
-        "description": "This is updated task."
+        "description": "This is updated task.",
+        "status": "Todo"
     }
 
     mock_updated_task = MagicMock(return_value=task_schema.Task(
         id=1,
         title=updated_task_data["title"],
-        description=updated_task_data["description"]
+        description=updated_task_data["description"],
+        status=updated_task_data["status"]
     ))
 
     task_crud.update_task = mock_updated_task
@@ -224,7 +235,8 @@ def test_update_task(client):
     assert response.json() == {
         "id": 1,
         "title": "Updated task",
-        "description": "This is updated task."
+        "description": "This is updated task.",
+        "status": "Todo"
     }
 
 def test_delete_task(client):
@@ -275,12 +287,14 @@ def test_delete_task(client):
     task_data = {
         "title": "Task to be removed",
         "description": "Description of task to be removed.",
+        "status": "Todo"
     }
 
     mock_create_task = MagicMock(return_value=task_schema.Task(
         id=1,
         title=task_data["title"],
         description=task_data["description"],
+        status=task_data["status"],
     ))
 
     task_crud.create_task = mock_create_task
@@ -295,6 +309,7 @@ def test_delete_task(client):
     assert create_task_response.json() == {
         "title": "Task to be removed",
         "description": "Description of task to be removed.",
+        "status": "Todo",
         "id": 1,
     }
 

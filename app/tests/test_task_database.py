@@ -26,7 +26,7 @@ def test_create_task(session):
     session.add(test_project)
     session.commit()
 
-    task = task_schema.TaskCreate(title="test_task", description="test_description")
+    task = task_schema.TaskCreate(title="test_task", description="test_description", status="Todo")
     created_task = task_crud.create_task(session, task, test_project.id)
     assert created_task.title == task.title
     assert created_task.description == task.description
@@ -52,7 +52,7 @@ def test_get_task_by_id(session):
     session.add(test_project)
     session.commit()
 
-    task = task_schema.TaskCreate(title="test_task", description="test_description")
+    task = task_schema.TaskCreate(title="test_task", description="test_description", status="Todo")
     created_task = task_crud.create_task(session, task, test_project.id)
     assert created_task.title == task.title
     assert created_task.description == task.description
@@ -88,7 +88,7 @@ def test_update_task(session):
     session.add(test_task)
     session.commit()
 
-    updated_task_data = {"title": "Updated Task Name", "description": "This is the updated task description."}
+    updated_task_data = {"title": "Updated Task Name", "description": "This is the updated task description.", "status": "Todo"}
     updated_task = task_schema.TaskBase(**updated_task_data)
     task_crud.update_task(session, test_task.id , updated_task, test_project.id)
 
