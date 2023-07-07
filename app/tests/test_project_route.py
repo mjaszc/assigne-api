@@ -11,7 +11,8 @@ import app.schemas.user_schema as user_schema
 def test_create_project(client):
     project_data = {
         "name": "Test Project",
-        "description": "Test Test Test"
+        "description": "Test Test Test",
+        "due_date": "2023-07-09"
     }
 
     mock_create_project = MagicMock(return_value=project_schema.Project(
@@ -19,6 +20,7 @@ def test_create_project(client):
         name=project_data["name"],
         description=project_data["description"],
         start_date="2023-06-20",
+        due_date= "2023-07-09",
         author=user_schema.User(
             id=1,
             email="user@example.com",
@@ -39,6 +41,7 @@ def test_create_project(client):
         "name": "Test Project",
         "description": "Test Test Test",
         "start_date": "2023-06-20",
+        "due_date": "2023-07-09",
         "author": {
             "id": 1,
             "email": "user@example.com",
@@ -58,6 +61,7 @@ def test_get_project_by_id(client):
         name="Test Project",
         description="Test Test Test",
         start_date="2023-06-20",
+        due_date="2023-07-09",
         author=user_schema.User(
             id=1,
             email="user@example.com",
@@ -78,6 +82,7 @@ def test_get_project_by_id(client):
         "name": "Test Project",
         "description": "Test Test Test",
         "start_date": "2023-06-20",
+        "due_date": "2023-07-09",
         "author": {
             "id": 1,
             "email": "user@example.com",
@@ -97,6 +102,7 @@ def test_get_all_projects(client, monkeypatch):
         name="Test Project One",
         description="Test Description One",
         start_date="2023-06-20",
+        due_date="2023-07-09",
         author=user_schema.User(
             id=1,
             email="user@example.com",
@@ -111,6 +117,7 @@ def test_get_all_projects(client, monkeypatch):
         name="Test Project Two",
         description="Test Description Two",
         start_date="2023-06-20",
+        due_date="2023-07-09",
         author=user_schema.User(
             id=1,
             email="user@example.com",
@@ -135,6 +142,7 @@ def test_get_all_projects(client, monkeypatch):
             "name": "Test Project One",
             "description": "Test Description One",
             "start_date": "2023-06-20",
+            "due_date": "2023-07-09",
             "author": {
                 "id": 1,
                 "email": "user@example.com",
@@ -148,6 +156,7 @@ def test_get_all_projects(client, monkeypatch):
             "name": "Test Project Two",
             "description": "Test Description Two",
             "start_date": "2023-06-20",
+            "due_date": "2023-07-09",
             "author": {
                 "id": 1,
                 "email": "user@example.com",
@@ -163,7 +172,8 @@ def test_get_all_projects(client, monkeypatch):
 def test_update_project_by_id(client):
     project_data = {
         "name": "Test Project",
-        "description": "Test Test Test"
+        "description": "Test Test Test",
+        "due_date": "2023-07-09",
     }
 
     mock_create_project = MagicMock(return_value=project_schema.Project(
@@ -171,6 +181,7 @@ def test_update_project_by_id(client):
         name=project_data["name"],
         description=project_data["description"],
         start_date="2023-06-20",
+        due_date="2023-07-09",
         author=user_schema.User(
             id=1,
             email="user@example.com",
@@ -190,6 +201,7 @@ def test_update_project_by_id(client):
         "name": "Test Project",
         "description": "Test Test Test",
         "start_date": "2023-06-20",
+        "due_date": "2023-07-09",
         "author": {
             "id": 1,
             "email": "user@example.com",
@@ -211,6 +223,7 @@ def test_update_project_by_id(client):
         name=updated_project_data["name"],
         description=updated_project_data["description"],
         start_date="2023-06-20",
+        due_date="2023-07-09",
         author=user_schema.User(
             id=1,
             email="user@example.com",
@@ -234,6 +247,7 @@ def test_update_project_by_id(client):
         "name": "Modified Project",
         "description": "Modified Project Description",
         "start_date": "2023-06-20",
+        "due_date": "2023-07-09",
         "author": {
             "id": 1,
             "email": "user@example.com",
@@ -250,7 +264,8 @@ def test_update_project_by_id(client):
 def test_delete_project(client):
     project_data = {
         "name": "Project to be removed",
-        "description": "Removed project description."
+        "description": "Removed project description.",
+        "due_date":"2023-07-09"
     }
 
     mock_create_project = MagicMock(return_value=project_schema.Project(
@@ -258,6 +273,7 @@ def test_delete_project(client):
         name=project_data["name"],
         description=project_data["description"],
         start_date="2023-06-20",
+        due_date="2023-07-09",
         author=user_schema.User(
             id=1,
             email="user@example.com",
@@ -277,6 +293,7 @@ def test_delete_project(client):
         "name": "Project to be removed",
         "description": "Removed project description.",
         "start_date": "2023-06-20",
+        "due_date": "2023-07-09",
         "author": {
             "id": 1,
             "email": "user@example.com",

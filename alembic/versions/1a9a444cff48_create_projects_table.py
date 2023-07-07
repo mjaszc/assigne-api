@@ -22,7 +22,8 @@ def upgrade() -> None:
         sa.Column("id", sa.Integer(), primary_key=True),
         sa.Column("name", sa.String(255), nullable=False),
         sa.Column("description", sa.String(255), nullable=False),
-        sa.Column("start_date", sa.DateTime(), nullable=False),
+        sa.Column("start_date", sa.Date(), nullable=False),
+        sa.Column("due_date", sa.Date(), nullable=True),
         sa.Column("author_id", sa.Integer(), sa.ForeignKey("users.id"), nullable=False),
     )
 

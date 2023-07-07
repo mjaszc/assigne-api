@@ -1,5 +1,5 @@
 import pytest
-from datetime import datetime
+import datetime
 from fastapi import HTTPException
 
 import app.models.project_model as project_model
@@ -22,7 +22,7 @@ def test_create_project(session):
     created_project = project_crud.create_project(session, project, user)
     assert created_project.name == project.name
     assert created_project.description == project.description
-    assert created_project.start_date.date() == datetime.utcnow().date()
+    assert created_project.start_date == datetime.date.today()
     assert created_project.author_id == user.id
 
     # Try to create project with the same name
