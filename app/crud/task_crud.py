@@ -7,10 +7,11 @@ import app.schemas.project_schema as project_schema
 import app.models.user_model as user_model
 
 
-def create_task(db: Session, task: task_schema.TaskCreate, current_project: project_schema.Project):
+def create_task(db: Session, task: task_schema.Task, current_project: project_schema.Project):
     db_task = task_model.Task(
         title=task.title,
         description=task.description,
+        status=task.status,
         project_id=current_project
     )
     db.add(db_task)
