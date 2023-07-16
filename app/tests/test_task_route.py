@@ -10,7 +10,7 @@ def test_create_task(client):
     project_data = {
         "name": "test_proj",
         "description": "test_desc",
-        "due_date": "2023-07-09"
+        "due_date": "2025-07-16"
     }
 
     mock_create_project = MagicMock(return_value=project_schema.Project(
@@ -18,7 +18,7 @@ def test_create_task(client):
         name=project_data["name"],
         description=project_data["description"],
         start_date="2023-06-20",
-        due_date="2023-07-09",
+        due_date="2025-07-09",
         author=user_schema.User(
             id=1,
             email="user@example.com",
@@ -39,7 +39,7 @@ def test_create_task(client):
         "name": "test_proj",
         "description": "test_desc",
         "start_date": "2023-06-20",
-        "due_date": "2023-07-09",
+        "due_date": "2025-07-09",
         "author": {
             "id": 1,
             "email": "user@example.com",
@@ -80,7 +80,7 @@ def test_get_task(client):
     project_data = {
         "name": "test_proj",
         "description": "test_desc",
-        "due_date": "2023-07-09"
+        "due_date": "2025-07-09"
     }
 
     mock_create_project = MagicMock(return_value=project_schema.Project(
@@ -88,7 +88,7 @@ def test_get_task(client):
         name=project_data["name"],
         description=project_data["description"],
         start_date="2023-06-20",
-        due_date="2023-07-09",
+        due_date="2025-07-09",
         author=user_schema.User(
             id=1,
             email="user@example.com",
@@ -109,7 +109,7 @@ def test_get_task(client):
         "name": "test_proj",
         "description": "test_desc",
         "start_date": "2023-06-20",
-        "due_date": "2023-07-09",
+        "due_date": "2025-07-09",
         "author": {
             "id": 1,
             "email": "user@example.com",
@@ -144,7 +144,7 @@ def test_update_task(client):
     project_data = {
         "name": "test_proj",
         "description": "test_desc",
-        "due_date": "2023-07-09"
+        "due_date": "2025-07-09"
     }
 
     mock_create_project = MagicMock(return_value=project_schema.Project(
@@ -152,7 +152,7 @@ def test_update_task(client):
         name=project_data["name"],
         description=project_data["description"],
         start_date="2023-06-20",
-        due_date="2023-07-09",
+        due_date="2025-07-09",
         author=user_schema.User(
             id=1,
             email="user@example.com",
@@ -173,7 +173,7 @@ def test_update_task(client):
         "name": "test_proj",
         "description": "test_desc",
         "start_date": "2023-06-20",
-        "due_date": "2023-07-09",
+        "due_date": "2025-07-09",
         "author": {
             "id": 1,
             "email": "user@example.com",
@@ -243,7 +243,7 @@ def test_delete_task(client):
     project_data = {
         "name": "test_proj",
         "description": "test_desc",
-        "due_date": "2023-07-09"
+        "due_date": "2025-07-09"
     }
 
     mock_create_project = MagicMock(return_value=project_schema.Project(
@@ -251,7 +251,7 @@ def test_delete_task(client):
         name=project_data["name"],
         description=project_data["description"],
         start_date="2023-06-20",
-        due_date= "2023-07-09",
+        due_date= "2025-07-09",
         author=user_schema.User(
             id=1,
             email="user@example.com",
@@ -272,7 +272,7 @@ def test_delete_task(client):
         "name": "test_proj",
         "description": "test_desc",
         "start_date": "2023-06-20",
-        "due_date": "2023-07-09",
+        "due_date": "2025-07-09",
         "author": {
             "id": 1,
             "email": "user@example.com",
