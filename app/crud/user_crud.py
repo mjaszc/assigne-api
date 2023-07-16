@@ -11,10 +11,7 @@ from jose import JWTError, jwt
 
 from datetime import datetime, timedelta
 from typing import Optional, Annotated, List
-from dotenv import dotenv_values
-
-
-config = dotenv_values(".env")
+import os 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -80,8 +77,8 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(
         to_encode,
-        config.get("SECRET_KEY"),
-        config.get("ALGORITHM"),
+        os.environ["SECRET_KEY"],
+        os.environ["ALGORITHM"],
     )
     return encoded_jwt
 
@@ -92,12 +89,12 @@ def create_refresh_token(data: dict, expires_delta: Optional[timedelta] = None):
     else:
         expire = datetime.utcnow() + timedelta(days=1)
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, config.get("SECRET_KEY"), config.get("ALGORITHM"))
+    encoded_jwt = jwt.encode(to_encode, os.environ["SECRET_KEY"], os.environ["ALGORITHM"])
     return encoded_jwt
 
 def decode_token(token: str):
     try:
-        payload = jwt.decode(token, config.get("SECRET_KEY"), config.get("ALGORITHM"))
+        payload = jwt.decode(token, os.environ["SECRET_KEY"], os.environ["ALGORITHM"])
         username = payload.get("sub")
         if username is None:
             raise JWTError()
@@ -116,8 +113,8 @@ async def get_current_user(
     try:
         payload = jwt.decode(
             token,
-            config.get("SECRET_KEY"),
-            config.get("ALGORITHM"),
+            os.environ["SECRET_KEY"],
+            os.environ["ALGORITHM"],
         )
         username: str = payload.get("sub")
         if username is None:
