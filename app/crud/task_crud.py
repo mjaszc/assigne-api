@@ -5,6 +5,7 @@ import datetime
 import app.models.task_model as task_model
 import app.schemas.task_schema as task_schema
 import app.schemas.project_schema as project_schema
+import app.models.project_model as project_model
 import app.models.user_model as user_model
 import app.schemas.user_schema as user_schema
 import app.models.discussion_model as discussion_model
@@ -79,3 +80,10 @@ def create_discussion(db: Session, discussion: discussion_schema.Discussion, use
     db.refresh(new_discussion)
 
     return new_discussion
+
+def get_task_discussion(db: Session, discussion_id: int, task_id: int, project_id: int):
+    return (
+        db.query(discussion_model.Discussion)
+        .filter(discussion_model.Discussion.id == discussion_id, task_model.Task.id == task_id, project_model.Project.id == project_id)
+        .first()
+    )

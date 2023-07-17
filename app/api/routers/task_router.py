@@ -90,3 +90,13 @@ async def create_discussion(
     current_user: user_schema.User = Depends(user_crud.get_current_user),
 ):
     return task_crud.create_discussion(db, discussion, current_user, task_id, project_id)
+
+@router.get("/{task_id}/discussions/{discussion_id}", response_model=discussion_schema.Discussion)
+async def get_task_discussion(
+    discussion_id: int,
+    task_id:int,
+    project_id:int,
+    db: Session = Depends(get_db),
+    current_user: user_schema.User = Depends(user_crud.get_current_user)
+):
+    return task_crud.get_task_discussion(db, discussion_id, task_id, project_id)
