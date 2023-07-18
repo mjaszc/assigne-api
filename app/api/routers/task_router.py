@@ -7,7 +7,6 @@ import app.schemas.user_schema as user_schema
 import app.crud.task_crud as task_crud
 import app.crud.user_crud as user_crud
 import app.crud.project_crud as project_crud
-import app.schemas.discussion_schema as discussion_schema
 
 router = APIRouter(prefix="/api/v1/projects/{project_id}/tasks")
 
@@ -78,46 +77,4 @@ async def assign_task_to_user(
     db: Session = Depends(get_db),
     current_user: user_schema.User = Depends(user_crud.get_current_user),
 ):
-    task_crud.assign_user_to_task(db, task_id, project_id, user_id)\
-
-@router.post("/{task_id}/discussions", response_model=discussion_schema.Discussion)
-async def create_discussion(
-    discussion: discussion_schema.DiscussionCreate,
-    task_id:int,
-    project_id:int,
-    user_id:int,
-    db: Session = Depends(get_db),
-    current_user: user_schema.User = Depends(user_crud.get_current_user),
-):
-    return task_crud.create_discussion(db, discussion, current_user, task_id, project_id)
-
-@router.get("/{task_id}/discussions/{discussion_id}", response_model=discussion_schema.Discussion)
-async def get_task_discussion(
-    discussion_id: int,
-    task_id:int,
-    project_id:int,
-    db: Session = Depends(get_db),
-    current_user: user_schema.User = Depends(user_crud.get_current_user)
-):
-    return task_crud.get_task_discussion(db, discussion_id)
-
-@router.put("/{task_id}/discussions/{discussion_id}", response_model=discussion_schema.Discussion)
-async def update_task_discussion(
-    discussion: discussion_schema.DiscussionBase,
-    discussion_id: int,
-    task_id:int,
-    project_id:int,
-    db: Session = Depends(get_db),
-    current_user: user_schema.User = Depends(user_crud.get_current_user)
-):
-    return task_crud.update_discussion(db, discussion, discussion_id, current_user.id)
-
-@router.delete("/{task_id}/discussions/{discussion_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_task_discussion(
-    discussion_id: int,
-    task_id:int,
-    project_id:int,
-    db: Session = Depends(get_db),
-    current_user: user_schema.User = Depends(user_crud.get_current_user)
-):
-    task_crud.delete_discussion(db, discussion_id)
+    task_crud.assign_user_to_task(db, task_id, project_id, user_id)
