@@ -13,3 +13,4 @@ class Discussion(Base):
     created_at = Column(Date)
 
     tasks = relationship("Task", back_populates="discussions")
+    comments = relationship("DiscussionComment", back_populates="discussion_comments")

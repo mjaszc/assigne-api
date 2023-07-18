@@ -53,7 +53,7 @@ async def get_task_discussion(
 
     return discussion
 
-@router.put("/discussions/{discussion_id}", response_model=discussion_schema.Discussion)
+@router.put("/{discussion_id}", response_model=discussion_schema.Discussion)
 async def update_task_discussion(
     discussion: discussion_schema.DiscussionBase,
     discussion_id: int,
@@ -68,7 +68,7 @@ async def update_task_discussion(
 
     return discussion_crud.update_discussion(db, discussion, discussion_id, current_user.id)
 
-@router.delete("/discussions/{discussion_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{discussion_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_task_discussion(
     discussion_id: int,
     task_id:int,
