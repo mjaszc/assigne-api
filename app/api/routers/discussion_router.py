@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 
 from app.db.database import SessionLocal
@@ -6,6 +6,8 @@ import app.schemas.user_schema as user_schema
 import app.crud.user_crud as user_crud
 import app.crud.discussion_crud as discussion_crud
 import app.schemas.discussion_schema as discussion_schema
+import app.crud.project_crud as project_crud
+import app.crud.task_crud as task_crud
 
 
 router = APIRouter(prefix="/api/v1/projects/{project_id}/tasks/{task_id}/discussions")
@@ -26,6 +28,15 @@ async def create_discussion(
     db: Session = Depends(get_db),
     current_user: user_schema.User = Depends(user_crud.get_current_user),
 ):
+    # Validations
+    project = project_crud.get_project(db, project_id)
+    if project is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Project not found")
+
+    task = task_crud.get_task_by_id(db, task_id, project_id)
+    if task is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Task not found")
+
     return discussion_crud.create_discussion(db, discussion, current_user, task_id, project_id)
 
 @router.get("/{discussion_id}", response_model=discussion_schema.Discussion)
@@ -36,7 +47,11 @@ async def get_task_discussion(
     db: Session = Depends(get_db),
     current_user: user_schema.User = Depends(user_crud.get_current_user)
 ):
-    return discussion_crud.get_task_discussion(db, discussion_id)
+    discussion = discussion_crud.get_task_discussion(db, discussion_id)
+    if discussion is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Discussion not found")
+
+    return discussion
 
 @router.put("/discussions/{discussion_id}", response_model=discussion_schema.Discussion)
 async def update_task_discussion(
@@ -47,6 +62,10 @@ async def update_task_discussion(
     db: Session = Depends(get_db),
     current_user: user_schema.User = Depends(user_crud.get_current_user)
 ):
+    discussion = discussion_crud.get_task_discussion(db, discussion_id)
+    if discussion is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Discussion not found")
+
     return discussion_crud.update_discussion(db, discussion, discussion_id, current_user.id)
 
 @router.delete("/discussions/{discussion_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -57,4 +76,8 @@ async def delete_task_discussion(
     db: Session = Depends(get_db),
     current_user: user_schema.User = Depends(user_crud.get_current_user)
 ):
+    discussion = discussion_crud.get_task_discussion(db, discussion_id)
+    if discussion is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Discussion not found")
+
     discussion_crud.delete_discussion(db, discussion_id)
