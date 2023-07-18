@@ -13,4 +13,4 @@ class DiscussionComment(Base):
     message = Column(String)
     created_at = Column(Date)
 
-    discussion = relationship("Discussion", back_populates="comments")
+    discussion = relationship("Discussion", back_populates="discussion_comments")
