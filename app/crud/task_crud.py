@@ -81,9 +81,17 @@ def create_discussion(db: Session, discussion: discussion_schema.Discussion, use
 
     return new_discussion
 
-def get_task_discussion(db: Session, discussion_id: int, task_id: int, project_id: int):
+def get_task_discussion(db: Session, discussion_id: int):
     return (
         db.query(discussion_model.Discussion)
-        .filter(discussion_model.Discussion.id == discussion_id, task_model.Task.id == task_id, project_model.Project.id == project_id)
+        .filter(discussion_model.Discussion.id == discussion_id)
         .first()
     )
+
+def delete_discussion(db: Session, discussion_id: int):
+    db_disc = db.query(discussion_model.Discussion).filter(discussion_model.Discussion.id == discussion_id).first()
+    if not db_disc:
+        return False
+    db.delete(db_disc)
+    db.commit()
+    return True
