@@ -13,4 +13,15 @@ class Discussion(Base):
     created_at = Column(Date)
 
     tasks = relationship("Task", back_populates="discussions")
-    comments = relationship("DiscussionComment", back_populates="discussions")
+    comments = relationship("DiscussionComment", back_populates="discussion")
+
+class DiscussionComment(Base):
+    __tablename__ = 'discussion_comments'
+
+    id = Column(Integer, primary_key=True, index=True)
+    discussion_id = Column(Integer, ForeignKey('discussions.id'))
+    user_id = Column(Integer, ForeignKey('users.id'))
+    message = Column(String)
+    created_at = Column(Date)
+
+    discussion = relationship("Discussion", back_populates="comments")
