@@ -21,4 +21,3 @@ class Task(Base):
 
     project = relationship("Project", back_populates="tasks")
     assigned_user = relationship("User", secondary=task_user_table, back_populates="assigned_tasks")
-    discussions = relationship("Discussion", back_populates="tasks")

@@ -20,7 +20,6 @@ def upgrade() -> None:
     op.create_table(
         'discussions',
         sa.Column('id', sa.Integer(), primary_key=True),
-        sa.Column('task_id', sa.Integer(), sa.ForeignKey('tasks.id'), nullable=False),
         sa.Column('project_id', sa.Integer(), sa.ForeignKey('projects.id'), nullable=False),
         sa.Column('user_id', sa.Integer(), sa.ForeignKey('users.id'), nullable=False),
         sa.Column('message', sa.String(), nullable=True),

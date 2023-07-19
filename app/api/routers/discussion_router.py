@@ -7,10 +7,9 @@ import app.crud.user_crud as user_crud
 import app.crud.discussion_crud as discussion_crud
 import app.schemas.discussion_schema as discussion_schema
 import app.crud.project_crud as project_crud
-import app.crud.task_crud as task_crud
 
 
-router = APIRouter(prefix="/api/v1/projects/{project_id}/tasks/{task_id}/discussions")
+router = APIRouter(prefix="/api/v1/projects/{project_id}/discussions")
 
 def get_db():
     db = SessionLocal()
@@ -22,7 +21,6 @@ def get_db():
 @router.post("/", response_model=discussion_schema.Discussion)
 async def create_discussion(
     discussion: discussion_schema.DiscussionCreate,
-    task_id:int,
     project_id:int,
     user_id:int,
     db: Session = Depends(get_db),
@@ -33,11 +31,7 @@ async def create_discussion(
     if project is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Project not found")
 
-    task = task_crud.get_task_by_id(db, task_id, project_id)
-    if task is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Task not found")
-
-    return discussion_crud.create_discussion(db, discussion, current_user, task_id, project_id)
+    return discussion_crud.create_discussion(db, discussion, current_user, project_id)
 
 @router.get("/{discussion_id}", response_model=discussion_schema.Discussion)
 async def get_task_discussion(
