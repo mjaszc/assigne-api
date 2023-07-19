@@ -19,7 +19,7 @@ def create_discussion(db: Session, discussion: discussion_schema.Discussion, use
 
     return new_discussion
 
-def get_task_discussion(db: Session, discussion_id: int):
+def get_discussion(db: Session, discussion_id: int):
     return (
         db.query(discussion_model.Discussion)
         .filter(discussion_model.Discussion.id == discussion_id)

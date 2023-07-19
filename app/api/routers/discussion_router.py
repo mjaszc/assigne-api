@@ -37,9 +37,8 @@ async def create_discussion(
     return discussion_crud.create_discussion(db, discussion, current_user, project_id)
 
 @router.get("/{discussion_id}", response_model=discussion_schema.Discussion)
-async def get_task_discussion(
+async def get_discussion(
     discussion_id: int,
-    task_id:int,
     project_id:int,
     db: Session = Depends(get_db),
     current_user: user_schema.User = Depends(user_crud.get_current_user)
@@ -51,10 +50,9 @@ async def get_task_discussion(
     return discussion
 
 @router.put("/{discussion_id}", response_model=discussion_schema.Discussion)
-async def update_task_discussion(
+async def update_discussion(
     discussion: discussion_schema.DiscussionBase,
     discussion_id: int,
-    task_id:int,
     project_id:int,
     db: Session = Depends(get_db),
     current_user: user_schema.User = Depends(user_crud.get_current_user)
@@ -66,9 +64,8 @@ async def update_task_discussion(
     return discussion_crud.update_discussion(db, discussion, discussion_id, current_user.id)
 
 @router.delete("/{discussion_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_task_discussion(
+async def delete_discussion(
     discussion_id: int,
-    task_id:int,
     project_id:int,
     db: Session = Depends(get_db),
     current_user: user_schema.User = Depends(user_crud.get_current_user)
@@ -79,10 +76,9 @@ async def delete_task_discussion(
 
     discussion_crud.delete_discussion(db, discussion_id)
 
-@router.post("/discussions/{discussion_id}/comments", response_model=comment_schema.Comment)
+@router.post("/{discussion_id}/comments", response_model=comment_schema.Comment)
 def create_comment(
     discussion_id: int,
-    project_id:int,
     user_id:int,
     comment: comment_schema.CommentCreate,
     db: Session = Depends(get_db),
@@ -90,3 +86,17 @@ def create_comment(
 ):
 
     return comment_crud.create_comment(db, discussion_id, comment, current_user)
+
+@router.get("/{discussion_id}/comments/{comment_id}", response_model=comment_schema.Comment)
+async def get_comment(
+    comment_id: int,
+    task_id:int,
+    project_id:int,
+    db: Session = Depends(get_db),
+    current_user: user_schema.User = Depends(user_crud.get_current_user)
+):
+    comment = comment_crud.get_comment(db, comment_id)
+    if comment is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Comment not found")
+
+    return comment

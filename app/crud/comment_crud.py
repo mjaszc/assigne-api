@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session
 import datetime
 
-import app.schemas.project_schema as project_schema
 import app.schemas.user_schema as user_schema
 import app.schemas.comment_schema as comment_schema
 import app.models.discussion_model as discussion_model
@@ -20,3 +19,10 @@ def create_comment(db: Session, discussion: discussion_schema.Discussion, commen
     db.refresh(new_comment)
 
     return new_comment
+
+def get_comment(db: Session, comment_id: int):
+    return (
+        db.query(discussion_model.DiscussionComment)
+        .filter(discussion_model.DiscussionComment.id == comment_id)
+        .first()
+    )
