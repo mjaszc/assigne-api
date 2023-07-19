@@ -1,15 +1,15 @@
 from pydantic import BaseModel
 from datetime import date
 
-class DiscussionBase(BaseModel):
+class CommentBase(BaseModel):
     message: str
 
-class DiscussionCreate(DiscussionBase):
+class CommentCreate(CommentBase):
     pass
 
-class Discussion(DiscussionBase):
+class Comment(CommentBase):
     id: int
-    project_id: int
+    discussion_id: int
     user_id: int
     created_at: date
 
