@@ -43,7 +43,7 @@ async def get_discussion(
     db: Session = Depends(get_db),
     current_user: user_schema.User = Depends(user_crud.get_current_user)
 ):
-    discussion = discussion_crud.get_task_discussion(db, discussion_id)
+    discussion = discussion_crud.get_discussion(db, discussion_id)
     if discussion is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Discussion not found")
 
@@ -70,7 +70,7 @@ async def delete_discussion(
     db: Session = Depends(get_db),
     current_user: user_schema.User = Depends(user_crud.get_current_user)
 ):
-    discussion = discussion_crud.get_task_discussion(db, discussion_id)
+    discussion = discussion_crud.get_discussion(db, discussion_id)
     if discussion is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Discussion not found")
 
@@ -115,3 +115,17 @@ async def update_comment(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Comment not found")
 
     return discussion_crud.update_discussion(db, comment, comment_id, current_user.id)
+
+@router.delete("/{discussion_id}/comments/{comment_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_comment(
+    comment_id: int,
+    discussion_id: int,
+    project_id:int,
+    db: Session = Depends(get_db),
+    current_user: user_schema.User = Depends(user_crud.get_current_user)
+):
+    comment = comment_crud.get_comment(db, comment_id)
+    if comment is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Comment not found")
+
+    comment_crud.delete_comment(db, comment_id)

@@ -37,3 +37,11 @@ def update_comment(db: Session, comment: comment_schema.Comment, comment_id: int
     db.commit()
     db.refresh(db_comment)
     return db_comment
+
+def delete_comment(db: Session, comment_id: int):
+    db_comment = db.query(discussion_model.DiscussionComment).filter(discussion_model.DiscussionComment.id == comment_id).first()
+    if not db_comment:
+        return False
+    db.delete(db_comment)
+    db.commit()
+    return True
