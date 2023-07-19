@@ -6,7 +6,10 @@ import app.schemas.user_schema as user_schema
 import app.crud.user_crud as user_crud
 import app.crud.discussion_crud as discussion_crud
 import app.schemas.discussion_schema as discussion_schema
+import app.schemas.comment_schema as comment_schema
+import app.crud.comment_crud as comment_crud
 import app.crud.project_crud as project_crud
+
 
 
 router = APIRouter(prefix="/api/v1/projects/{project_id}/discussions")
@@ -75,3 +78,15 @@ async def delete_task_discussion(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Discussion not found")
 
     discussion_crud.delete_discussion(db, discussion_id)
+
+@router.post("/discussions/{discussion_id}/comments", response_model=comment_schema.Comment)
+def create_comment(
+    discussion_id: int,
+    project_id:int,
+    user_id:int,
+    comment: comment_schema.CommentCreate,
+    db: Session = Depends(get_db),
+    current_user: user_schema.User = Depends(user_crud.get_current_user)
+):
+
+    return comment_crud.create_comment(db, discussion_id, comment, current_user)
