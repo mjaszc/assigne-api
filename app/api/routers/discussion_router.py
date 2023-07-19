@@ -57,7 +57,7 @@ async def update_discussion(
     db: Session = Depends(get_db),
     current_user: user_schema.User = Depends(user_crud.get_current_user)
 ):
-    discussion = discussion_crud.get_task_discussion(db, discussion_id)
+    discussion = discussion_crud.get_discussion(db, discussion_id)
     if discussion is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Discussion not found")
 
@@ -89,8 +89,8 @@ def create_comment(
 
 @router.get("/{discussion_id}/comments/{comment_id}", response_model=comment_schema.Comment)
 async def get_comment(
+    discussion_id: int,
     comment_id: int,
-    task_id:int,
     project_id:int,
     db: Session = Depends(get_db),
     current_user: user_schema.User = Depends(user_crud.get_current_user)
@@ -100,3 +100,18 @@ async def get_comment(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Comment not found")
 
     return comment
+
+@router.put("/{discussion_id}/comments/{comment_id}", response_model=comment_schema.Comment)
+async def update_comment(
+    comment: comment_schema.CommentBase,
+    comment_id: int,
+    discussion_id: int,
+    project_id:int,
+    db: Session = Depends(get_db),
+    current_user: user_schema.User = Depends(user_crud.get_current_user)
+):
+    comment = comment_crud. get_comment(db, comment_id)
+    if comment is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Comment not found")
+
+    return discussion_crud.update_discussion(db, comment, comment_id, current_user.id)

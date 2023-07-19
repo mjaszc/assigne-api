@@ -26,3 +26,14 @@ def get_comment(db: Session, comment_id: int):
         .filter(discussion_model.DiscussionComment.id == comment_id)
         .first()
     )
+
+def update_comment(db: Session, comment: comment_schema.Comment, comment_id: int, user_id: int):
+    db_comment = db.query(discussion_model.DiscussionComment).filter(discussion_model.DiscussionComment.id == comment_id).first()
+    if not db_comment:
+        return None
+    for key, value in comment.dict(exclude_unset=True).items():
+        setattr(db_comment, key, value)
+    db.add(db_comment)
+    db.commit()
+    db.refresh(db_comment)
+    return db_comment
