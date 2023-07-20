@@ -9,6 +9,7 @@ import app.crud.task_crud as task_crud
 from app.db.database import SessionLocal
 import app.schemas.user_schema as user_schema
 import app.crud.user_crud as user_crud
+import app.crud.log_crud as log_crud
 
 
 from fastapi.security import OAuth2PasswordBearer
@@ -36,9 +37,7 @@ async def create_project(
     if project.due_date < datetime.date.today():
         raise HTTPException(status_code=404, detail="Invalid Due Date property")
 
-    current_user = current_user
     return project_crud.create_project(db, project, current_user)
-
 
 @router.get("/{id}", response_model=project_schema.Project)
 async def get_project_by_id(
