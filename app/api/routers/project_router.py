@@ -39,7 +39,7 @@ async def create_project(
 
     # Generating log to the database
     log_details = f"Created project named {project.name}"
-    log_crud.create_log(db, action="Created Project", details=log_details)
+    log_crud.create_log(db, action="Created project", details=log_details)
 
     return project_crud.create_project(db, project, current_user)
 
@@ -95,7 +95,7 @@ async def update_project_by_id(
         raise HTTPException(status_code=404, detail="Project not found")
 
     # Generating log to the database
-    log_details = f"Updated project with ID {id}: new name: {project.name} description: {project.description} due_date: {project.due_date}"
+    log_details = f"Updated project with ID {id}: New Name: {project.name} | Description: {project.description} | Due Date: {project.due_date}"
     log_crud.create_log(db, action="Updated project", details=log_details)
 
     return project_crud.update_project(db, id, project)
@@ -124,3 +124,7 @@ async def assign_user_to_project(
     current_user: user_schema.User = Depends(user_crud.get_current_user),
 ):
     project_crud.assign_user_to_project(db, id, user_id)
+
+    # Generating log to the database
+    log_details = f"Assigned project ID {id} to user ID {user_id} by user {current_user.username}"
+    log_crud.create_log(db, action="Assigned project", details=log_details)
