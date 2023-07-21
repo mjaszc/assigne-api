@@ -7,6 +7,7 @@ import app.schemas.user_schema as user_schema
 import app.crud.task_crud as task_crud
 import app.crud.user_crud as user_crud
 import app.crud.project_crud as project_crud
+import app.crud.log_crud as log_crud
 
 router = APIRouter(prefix="/api/v1/projects/{project_id}/tasks")
 
@@ -28,6 +29,11 @@ async def create_task(
     project = project_crud.get_project(db, project_id)
     if project is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Project not found")
+
+    # Generating log to the database
+    log_details = f"Created task named {task.title}"
+    log_crud.create_log(db, action="Created task", details=log_details)
+
     return task_crud.create_task(db, task, project_id)
 
 @router.get("/{task_id}", response_model=task_schema.Task)
@@ -54,6 +60,10 @@ async def update_task_by_id(
     if get_task is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Task not found")
 
+    # Generating log to the database
+    log_details = f"Updated task with ID {task_id}: New Title: {task.title} | Description: {task.description} | Status: {task.status}"
+    log_crud.create_log(db, action="Updated task", details=log_details)
+
     return task_crud.update_task(db, task_id, task, project_id)
 
 @router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -67,6 +77,10 @@ async def delete_task(
     if task_to_delete is None:
         raise HTTPException(status_code=404, detail="Task not found")
 
+    # Generating log to the database
+    log_details = f"Deleted task with ID {task_id}"
+    log_crud.create_log(db, action="Deleted task", details=log_details)
+
     task_crud.delete_task(db, task_id, project_id)
 
 @router.post("/{task_id}/assign/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
@@ -78,3 +92,7 @@ async def assign_task_to_user(
     current_user: user_schema.User = Depends(user_crud.get_current_user),
 ):
     task_crud.assign_user_to_task(db, task_id, project_id, user_id)
+
+    # Generating log to the database
+    log_details = f"Assigned task ID {task_id} to user ID {user_id} by user {current_user.username}"
+    log_crud.create_log(db, action="Assigned task", details=log_details)
