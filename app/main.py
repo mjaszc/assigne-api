@@ -9,6 +9,7 @@ from datetime import timedelta
 from app.db.database import SessionLocal
 import app.schemas.user_schema as user_schema
 import app.crud.user_crud as user_crud
+import app.crud.log_crud as log_crud
 
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from fastapi import Response
@@ -72,8 +73,11 @@ def register(user: user_schema.UserCreate, db: Session = Depends(get_db)):
             detail="User with this email or username already registered",
         )
 
-    db_user = user_crud.create_user(db, user)
-    return db_user
+    # Generating log to the database
+    log_details = f"Registered user: {user.username}"
+    log_crud.create_log(db, action="Register user", details=log_details)
+
+    return user_crud.create_user(db, user)
 
 
 app.include_router(api_router)
