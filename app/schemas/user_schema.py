@@ -16,6 +16,12 @@ class UserLogin(BaseModel):
 class UserCreate(UserBase):
     password: Optional[str]
 
+class UserWithoutTasks(UserBase):
+    is_active: Optional[bool]
+    id: int
+
+    class Config:
+        orm_mode = True
 
 class User(UserBase):
     is_active: Optional[bool]
