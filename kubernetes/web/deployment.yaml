@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: fast-api
-        image: jasmar2/assigne-api-web-k8s:0.0.5
+        image: jasmar2/assigne-api-web-k8s:0.0.8
         envFrom:
             - secretRef:
                 name: application-env

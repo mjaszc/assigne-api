@@ -14,10 +14,22 @@ import app.crud.log_crud as log_crud
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from fastapi import Response
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 
 from jose import JWTError
 
 app = FastAPI(title="AssigneAPI")
+
+# Deployment CORS
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
