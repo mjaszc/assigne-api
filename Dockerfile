@@ -10,4 +10,4 @@ COPY ./app /code/app
 COPY alembic.ini /code/
 COPY alembic /code/alembic
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80", "--access-log"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
