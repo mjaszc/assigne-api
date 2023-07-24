@@ -5,7 +5,8 @@ from app.schemas.comment_schema import Comment
 
 
 class DiscussionBase(BaseModel):
-    message: str
+    title: str
+    description: str
 
 class DiscussionCreate(DiscussionBase):
     pass

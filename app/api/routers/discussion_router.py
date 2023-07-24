@@ -35,7 +35,7 @@ async def create_discussion(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Project not found")
 
     # Generating log to the database
-    log_details = f"Created discussion: {discussion.message} by user {current_user.username}"
+    log_details = f"Created discussion: '{discussion.title}' by user {current_user.username}"
     log_crud.create_log(db, action="Created discussion", details=log_details)
 
     return discussion_crud.create_discussion(db, discussion, current_user, project_id)
@@ -56,7 +56,8 @@ async def get_discussion(
 
     discussion_response = discussion_schema.Discussion(
         id=discussion.id,
-        message=discussion.message,
+        title=discussion.title,
+        description=discussion.description,
         project_id=discussion.project_id,
         user_id=discussion.user_id,
         created_at=discussion.created_at,
@@ -78,7 +79,7 @@ async def update_discussion(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Discussion not found")
 
     # Generating log to the database
-    log_details = f"Updated discussion with ID {id}: New Message: {discussion.message}"
+    log_details = f"Updated discussion with ID {id}: New Title: {discussion.title}, New Description: {discussion.description}"
     log_crud.create_log(db, action="Updated discussion", details=log_details)
 
     return discussion_crud.update_discussion(db, discussion, discussion_id, current_user.id)

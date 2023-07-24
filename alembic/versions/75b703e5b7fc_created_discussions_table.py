@@ -22,7 +22,8 @@ def upgrade() -> None:
         sa.Column('id', sa.Integer(), primary_key=True),
         sa.Column('project_id', sa.Integer(), sa.ForeignKey('projects.id'), nullable=False),
         sa.Column('user_id', sa.Integer(), sa.ForeignKey('users.id'), nullable=False),
-        sa.Column('message', sa.String(), nullable=True),
+        sa.Column('title', sa.String(), nullable=False),
+        sa.Column('description', sa.String(), nullable=True),
         sa.Column('created_at', sa.Date(), nullable=True),
     )
 

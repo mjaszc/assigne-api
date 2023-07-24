@@ -10,7 +10,8 @@ def create_discussion(db: Session, discussion: discussion_schema.Discussion, use
     new_discussion = discussion_model.Discussion(
         project_id=project,
         user_id=user.id,
-        message=discussion.message,
+        title=discussion.title,
+        description=discussion.description,
         created_at=datetime.date.today()
     )
     db.add(new_discussion)
