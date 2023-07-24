@@ -3,7 +3,7 @@ from typing import Optional
 from datetime import date
 from typing import List
 from app.schemas.task_schema import Task
-from app.schemas.user_schema import User
+from app.schemas.user_schema import UserWithoutTasks
 
 class ProjectBase(BaseModel):
     name: str
@@ -21,7 +21,7 @@ class ProjectWithoutTasks(ProjectBase):
     id: int
     start_date: date
     due_date: Optional[date]
-    author: User
+    author: UserWithoutTasks
 
     class Config:
         orm_mode = True
@@ -30,9 +30,9 @@ class Project(ProjectBase):
     id: int
     start_date: date
     due_date: Optional[date]
-    author: User
+    author: UserWithoutTasks
     assigned_tasks: Optional[List[Task]] = []
-    assigned_users: Optional[List[User]] = []
+    assigned_users: Optional[List[UserWithoutTasks]] = []
 
     class Config:
         orm_mode = True

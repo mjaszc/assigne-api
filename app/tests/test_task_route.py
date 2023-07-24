@@ -24,7 +24,6 @@ def test_create_task(client):
             email="user@example.com",
             username="string",
             is_active=True,
-            assigned_tasks=[]
         ),
         assigned_tasks=[],
         assigned_users=[]
@@ -45,7 +44,6 @@ def test_create_task(client):
             "email": "user@example.com",
             "username": "string",
             "is_active": True,
-            "assigned_tasks": []
         },
         "assigned_tasks": [],
         "assigned_users":[]
@@ -94,7 +92,6 @@ def test_get_task(client):
             email="user@example.com",
             username="string",
             is_active=True,
-            assigned_tasks=[]
         ),
         assigned_tasks=[],
         assigned_users=[]
@@ -115,7 +112,6 @@ def test_get_task(client):
             "email": "user@example.com",
             "username": "string",
             "is_active": True,
-            "assigned_tasks": []
         },
         "assigned_tasks": [],
         "assigned_users": []
@@ -158,7 +154,6 @@ def test_update_task(client):
             email="user@example.com",
             username="string",
             is_active=True,
-            assigned_tasks=[]
         ),
         assigned_tasks=[],
         assigned_users=[]
@@ -179,7 +174,6 @@ def test_update_task(client):
             "email": "user@example.com",
             "username": "string",
             "is_active": True,
-            "assigned_tasks": []
         },
         "assigned_tasks": [],
         "assigned_users": []
@@ -257,7 +251,6 @@ def test_delete_task(client):
             email="user@example.com",
             username="string",
             is_active=True,
-            assigned_tasks=[]
         ),
         assigned_tasks=[],
         assigned_users=[]
@@ -278,7 +271,6 @@ def test_delete_task(client):
             "email": "user@example.com",
             "username": "string",
             "is_active": True,
-            "assigned_tasks": []
         },
         "assigned_tasks": [],
         "assigned_users": []

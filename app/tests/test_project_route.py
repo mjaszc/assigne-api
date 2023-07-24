@@ -26,7 +26,6 @@ def test_create_project(client):
             email="user@example.com",
             username="string",
             is_active=True,
-            assigned_tasks=[]
         ),
         assigned_tasks=[],
         assigned_users=[]
@@ -47,7 +46,6 @@ def test_create_project(client):
             "email": "user@example.com",
             "username": "string",
             "is_active": True,
-            "assigned_tasks": []
         },
         "assigned_tasks": [],
         "assigned_users": []
@@ -67,7 +65,6 @@ def test_get_project_by_id(client):
             email="user@example.com",
             username="string",
             is_active=True,
-            assigned_tasks=[]
         ),
         assigned_tasks=[],
         assigned_users=[]
@@ -88,7 +85,6 @@ def test_get_project_by_id(client):
             "email": "user@example.com",
             "username": "string",
             "is_active": True,
-            "assigned_tasks": []
         },
         "assigned_tasks": [],
         "assigned_users": []
@@ -108,7 +104,6 @@ def test_get_all_projects(client, monkeypatch):
             email="user@example.com",
             username="string",
             is_active=True,
-            assigned_tasks=[]
         ),
     ))
 
@@ -123,7 +118,6 @@ def test_get_all_projects(client, monkeypatch):
             email="user@example.com",
             username="string",
             is_active=True,
-            assigned_tasks=[]
         ),
     ))
 
@@ -148,7 +142,6 @@ def test_get_all_projects(client, monkeypatch):
                 "email": "user@example.com",
                 "username": "string",
                 "is_active": True,
-                "assigned_tasks": []
             },
         },
         {
@@ -162,7 +155,6 @@ def test_get_all_projects(client, monkeypatch):
                 "email": "user@example.com",
                 "username": "string",
                 "is_active": True,
-                "assigned_tasks": []
             },
         }
     ]
@@ -187,7 +179,6 @@ def test_update_project_by_id(client):
             email="user@example.com",
             username="string",
             is_active=True,
-            assigned_tasks=[]
         ),
         assigned_tasks=[],
         assigned_users=[]
@@ -207,7 +198,6 @@ def test_update_project_by_id(client):
             "email": "user@example.com",
             "username": "string",
             "is_active": True,
-            "assigned_tasks": []
         },
         "assigned_tasks": [],
         "assigned_users": []
@@ -229,7 +219,6 @@ def test_update_project_by_id(client):
             email="user@example.com",
             username="string",
             is_active=True,
-            assigned_tasks=[]
         ),
         assigned_tasks=[],
         assigned_users=[]
@@ -253,7 +242,6 @@ def test_update_project_by_id(client):
             "email": "user@example.com",
             "username": "string",
             "is_active": True,
-            "assigned_tasks": []
         },
         "assigned_tasks": [],
         "assigned_users": []
@@ -279,7 +267,6 @@ def test_delete_project(client):
             email="user@example.com",
             username="string",
             is_active=True,
-            assigned_tasks=[]
         ),
         assigned_tasks=[],
         assigned_users=[]
@@ -299,7 +286,6 @@ def test_delete_project(client):
             "email": "user@example.com",
             "username": "string",
             "is_active": True,
-            "assigned_tasks": []
         },
         "assigned_tasks": [],
         "assigned_users": []
