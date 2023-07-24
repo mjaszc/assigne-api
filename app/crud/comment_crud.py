@@ -27,6 +27,10 @@ def get_comment(db: Session, comment_id: int):
         .first()
     )
 
+def get_discussion_comments(db: Session, discussion_id: int):
+    discussion_comments = db.query(discussion_model.DiscussionComment).filter(discussion_model.DiscussionComment.discussion_id == discussion_id).all()
+    return discussion_comments
+
 def update_comment(db: Session, comment: comment_schema.Comment, comment_id: int, user_id: int):
     db_comment = db.query(discussion_model.DiscussionComment).filter(discussion_model.DiscussionComment.id == comment_id).first()
     if not db_comment:

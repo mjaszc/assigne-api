@@ -51,7 +51,19 @@ async def get_discussion(
     if discussion is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Discussion not found")
 
-    return discussion
+    # Retrieving all comments for a discussion
+    discussion_comments = comment_crud.get_discussion_comments(db, discussion_id)
+
+    discussion_response = discussion_schema.Discussion(
+        id=discussion.id,
+        message=discussion.message,
+        project_id=discussion.project_id,
+        user_id=discussion.user_id,
+        created_at=discussion.created_at,
+        comments=discussion_comments
+    )
+
+    return discussion_response
 
 @router.put("/{discussion_id}", response_model=discussion_schema.Discussion)
 async def update_discussion(
