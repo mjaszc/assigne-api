@@ -8,7 +8,8 @@ class Discussion(Base):
     id = Column(Integer, primary_key=True, index=True)
     project_id = Column(Integer, ForeignKey('projects.id'))
     user_id = Column(Integer, ForeignKey("users.id"))
-    message = Column(String)
+    title = Column(String)
+    description = Column(String)
     created_at = Column(Date)
 
     comments = relationship("DiscussionComment", back_populates="discussion")
